@@ -1,5 +1,5 @@
 public class IllegalSideLengthException extends IllegalArgumentException {
-    public IllegalSideLengthException() {
-        super();
+    public IllegalSideLengthException(String message) {
+        super(message);
     }
 }

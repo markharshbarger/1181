@@ -3,7 +3,7 @@ public class Square {
 
     public Square(double side) {
         if (side < 0) {
-            throw new IllegalSideLengthException();
+            throw new IllegalSideLengthException("Negative length: " + side);
         }
         this.side = side;
     }
