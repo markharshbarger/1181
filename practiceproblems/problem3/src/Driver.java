@@ -13,6 +13,7 @@ public class Driver {
             System.out.println("Error: you must enter a number");
             System.exit(0);
         }
+        userInput.close();
 
         Square mySquare = null;
         try {
