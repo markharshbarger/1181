@@ -14,9 +14,16 @@ public class Driver {
             System.exit(0);
         }
 
-            Square mySquare = new Square(userNum);
-            System.out.println("The perimeter of the square is " + mySquare.getPerimeter());
-            System.out.println("The area of the square is " + mySquare.getArea());
-        
+        Square mySquare = null;
+        try {
+            mySquare = new Square(userNum);
+        } catch (IllegalSideLengthException e) {
+            System.out.println(e);
+            System.exit(0);
+        }
+
+        System.out.println("The perimeter of the square is " + mySquare.getPerimeter());
+        System.out.println("The area of the square is " + mySquare.getArea());
+
     }
 }
