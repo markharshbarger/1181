@@ -5,32 +5,38 @@ public class Item {
     private boolean included;
     
     public Item(String name, double weight, int value) {
-
+        this.name = name;
+        this.weight = weight;
+        this.value = value;
+        included = false;
     }
 
     public Item(Item other) {
-
+        name = other.name;
+        weight = other.weight;
+        value = other.value;
+        included = other.included;
     }
 
     public double getWeight() {
-
+        return weight;
     }
 
-    public int getValuie() {
-
+    public int getValue() {
+        return value;
     }
 
     public boolean isIncluded() {
-
+        return included;
     }
 
     public void setIncluded(boolean included) {
-
+        this.included = included;
     }
 
     @Override
     public String toString() {
-
+        return name + "(" + weight + " lbs, $" + value + ")";
     }
 }
 
