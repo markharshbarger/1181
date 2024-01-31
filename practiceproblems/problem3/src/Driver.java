@@ -25,6 +25,5 @@ public class Driver {
 
         System.out.println("The perimeter of the square is " + mySquare.getPerimeter());
         System.out.println("The area of the square is " + mySquare.getArea());
-
     }
 }
