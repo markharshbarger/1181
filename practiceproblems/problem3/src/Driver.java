@@ -19,7 +19,7 @@ public class Driver {
         try {
             mySquare = new Square(userNum);
         } catch (IllegalSideLengthException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             System.exit(0);
         }
 
