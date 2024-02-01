@@ -6,12 +6,14 @@ public class Square {
 
     /**
      * Constructor for Square class, sets side with a double.
+     * 
      * @param side - (double) if double is less than 0, an IllegalSideLengthException is thrown
      */
     public Square(double side) {
         if (side < 0) {
             throw new IllegalSideLengthException("Negative length: " + side);
         }
+
         this.side = side;
     }
 

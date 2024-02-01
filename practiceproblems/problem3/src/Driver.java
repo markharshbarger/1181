@@ -5,10 +5,10 @@ public class Driver {
     public static void main(String[] args) {
         System.out.print("Enter the length of the square's side: ");
         Scanner userInput = new Scanner(System.in);
-        int userNum = 0;
+        double userNum = 0;
 
         try {
-            userNum = userInput.nextInt();
+            userNum = userInput.nextDouble();
         } catch (InputMismatchException e) {
             System.out.println("Error: you must enter a number");
             System.exit(0);
