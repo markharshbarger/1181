@@ -12,10 +12,10 @@ public class Item {
     }
 
     public Item(Item other) {
-        name = other.name;
-        weight = other.weight;
-        value = other.value;
-        included = other.included;
+        this.name = other.name;
+        this.weight = other.weight;
+        this.value = other.value;
+        this.included = other.included;
     }
 
     public double getWeight() {
