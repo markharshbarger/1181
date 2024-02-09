@@ -13,12 +13,17 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
     public Chromosome(ArrayList<Item> items) {
         super(items);
 
+        // takes the size of the arraylist into account (bigger lists means less percent of list you will be able to carry)
+        // based equation off of the smaller list (smaller list still has 50% probabiltiy)
+        int upperLimit = (int)((3.5 / this.size()) * 100);
+        // upperLimit = 201;
+
         rng = new Random();
         for (Item i : this) {
             Item newItem = new Item(i);
             
-            int randNum = rng.nextInt(10); // 0 - 9
-            if (randNum < 5) {
+            int randNum = rng.nextInt(100); // 0 - 99
+            if (randNum < upperLimit) {
                 newItem.setIncluded(true);
             } else {
                 newItem.setIncluded(false);
@@ -64,40 +69,19 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
     }
 
     public int getFitness() {
-        // Double totalWeight = 0.0;
-        // int totalValue = 0;
-        // for (Item i : this) {
-        //     if (i.isIncluded() == true) {
-        //         totalWeight += i.getWeight();
-        //         if (totalWeight > 10.0)
-        //             return 0;
-        
-        //         totalValue += i.getValue();
-        //         }
-        // }
-        // return totalValue;
-
         Double totalWeight = 0.0;
         int totalValue = 0;
-        boolean wentOver = false;
         for (Item i : this) {
             if (i.isIncluded() == true) {
                 totalWeight += i.getWeight();
-                if (totalWeight > 10.0) {
-                    if (wentOver == false) {
-                        wentOver = true;
-                        totalValue = 0 - i.getValue();
-                        continue;
-                    }
-                    totalValue -= i.getValue();
+                if (totalWeight > 10.0)
+                    return 0;
+        
+                totalValue += i.getValue();
                 }
-                if (wentOver == false) {
-                    totalValue += i.getValue();
-                }
-            }
         }
         return totalValue;
-    }
+        }
 
     public int compareTo(Chromosome other) {
         return other.getFitness() - this.getFitness();
