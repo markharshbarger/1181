@@ -16,7 +16,7 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
         rng = new Random();
         for (Item i : this) {
             Item newItem = new Item(i);
-
+            
             int randNum = rng.nextInt(10); // 0 - 9
             if (randNum < 5) {
                 newItem.setIncluded(true);

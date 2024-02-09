@@ -4,20 +4,20 @@ import java.util.Collections;
 
 public class App {
     public static void main(String[] args) throws FileNotFoundException {
-        // String fileLocation = "/home/goldeye/1181/projects/project1/textfiles/Items.txt";
-        String fileLocation = "/home/goldeye/1181/projects/project1/textfiles/more_Items.txt"; // answer is ~7600
+        String fileLocation = "/home/goldeye/1181/projects/project1/textfiles/Items.txt"; // 3400
+        // String fileLocation = "/home/goldeye/1181/projects/project1/textfiles/more_Items.txt"; // answer is ~7600
         ArrayList<Chromosome> currentGen = GeneticAlgorithm.initializePopulation(GeneticAlgorithm.readData(fileLocation), 10);
 
-        // for (Chromosome item : currentGen) {
-        //     System.out.println(item);
-        // }
-        // System.out.println("\n\n\n\n\n");
-        // Collections.sort(currentGen);
-        // for (Chromosome item : currentGen) {
-        //     System.out.println(item);
-        // }
+        for (Chromosome item : currentGen) {
+            System.out.println(item);
+        }
+        System.out.println("\n\n\n\n\n");
+        Collections.sort(currentGen);
+        for (Chromosome item : currentGen) {
+            System.out.println(item);
+        }
 
-        int amountOfGen = 3000;
+        int amountOfGen = 20;
         for (int i = 0; i < amountOfGen; ++i) {
             ArrayList<Chromosome> nextGen = new ArrayList<>();
             for (Chromosome current : currentGen) {
