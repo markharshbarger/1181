@@ -52,7 +52,7 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
             int randNum = rng.nextInt(10);
 
             if (randNum != 1) {
-                return;
+                continue;
             }
             
             if (i.isIncluded() == true) {
@@ -64,16 +64,37 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
     }
 
     public int getFitness() {
+        // Double totalWeight = 0.0;
+        // int totalValue = 0;
+        // for (Item i : this) {
+        //     if (i.isIncluded() == true) {
+        //         totalWeight += i.getWeight();
+        //         if (totalWeight > 10.0)
+        //             return 0;
+        
+        //         totalValue += i.getValue();
+        //         }
+        // }
+        // return totalValue;
+
         Double totalWeight = 0.0;
         int totalValue = 0;
+        boolean wentOver = false;
         for (Item i : this) {
             if (i.isIncluded() == true) {
                 totalWeight += i.getWeight();
-                if (totalWeight > 10.0)
-                    return 0;
-        
-                totalValue += i.getValue();
+                if (totalWeight > 10.0) {
+                    if (wentOver == false) {
+                        wentOver = true;
+                        totalValue = 0 - i.getValue();
+                        continue;
+                    }
+                    totalValue -= i.getValue();
                 }
+                if (wentOver == false) {
+                    totalValue += i.getValue();
+                }
+            }
         }
         return totalValue;
     }
