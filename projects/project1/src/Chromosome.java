@@ -1,22 +1,29 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Chromosome class represents an ArrayList of Items that included methods to compare, crossover, and mutate it with other Chromosomes
+ */
 public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome> {
     private static Random rng;
     
     /**
-     * Empty constructor
+     * Empty constructor sets no fields
      */
     public Chromosome() {
     }
 
+    /**
+     * Constructor for Chromosome
+     * 
+     * @param items - ArrayList of Item that sets the items to be in the Chromosome object
+     */
     public Chromosome(ArrayList<Item> items) {
         super(items);
 
         // takes the size of the arraylist into account (bigger lists means less percent of list you will be able to carry)
         // based equation off of the smaller list (smaller list still has 50% probabiltiy)
         int upperLimit = (int)((3.5 / this.size()) * 100);
-        // upperLimit = 201;
 
         rng = new Random();
         for (Item i : this) {
@@ -32,6 +39,14 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
         }
     }
 
+    /**
+     * Performs a 'crossover' of two Chromosome objects, both Chromosomes should containe the same ordered ArrayList. What differs
+     * is the if the item is included or not. It's a 50% to 50% probability of which 'parent' the 'child' will have its included value
+     * based on, for each item in the ArrayList.
+     * 
+     * @param other - Chromosome object that 50% of its included value will be in the 'child' or resulting Chromosome object
+     * @return Chromosome - 'child' of the two 'parents'. Is a deep copy that contains 50% of each parents values.
+     */
     public Chromosome crossover(Chromosome other) {
         Chromosome child = new Chromosome();
 
@@ -49,7 +64,11 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
         }
         return child;
     }
-
+    
+    /**
+     * Mutates the items in the object's ArrayList. Each item has a 10% chance that it will be
+     * mutated (invert the current boolean value included)
+     */
     public void mutate() {
         rng = new Random();
 
@@ -68,6 +87,12 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
         }
     }
 
+    /**
+     * Calculates the fitness of the object by adding the sum of all the included items values, unless the sum of the items weights
+     * is over 10.
+     * 
+     * @return int - sum of included items values, unless the sum of the items weights is over 10 which returns 0
+     */
     public int getFitness() {
         Double totalWeight = 0.0;
         int totalValue = 0;
@@ -83,10 +108,20 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
         return totalValue;
         }
 
+    /**
+     * Compares two chromosome object based on the fitness of each Chromosome
+     * @param other Chromosome - the other object being compared
+     * @return int - negative int if this object is greater than other object, 0 if objects equal, positive if this is less than other
+     */
+    @Override
     public int compareTo(Chromosome other) {
         return other.getFitness() - this.getFitness();
     }
 
+    /**
+     * Returns the String represention of the object
+     * @return String - outputs all the items included in the Chromosome along with the total fitness of the object at the end
+     */
     @Override
     public String toString() {
         String finalString = "";
