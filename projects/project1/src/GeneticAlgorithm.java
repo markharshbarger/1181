@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GeneticAlgorithm {
+    /**
+     * Reads data from a .txt file and parses the values into an ArrayList. Format of .txt file should follow: "'name', 'weight', 'value'"
+     * with a new line for each entry
+     * 
+     * @param filename String - represents the path of the .txt file that contains the data in the correct format
+     * @return ArrayList<Item> - that includes all the items in the .txt file
+     * @throws FileNotFoundException - if the file could not be found using the filename
+     */
     public static ArrayList<Item> readData(String filename) throws FileNotFoundException {
         ArrayList<Item> list = new ArrayList<>();
         
@@ -40,6 +48,13 @@ public class GeneticAlgorithm {
         return list;
     }
 
+    /**
+     * Initialize a new population of Chromosome's and puts in an ArrayList<Chromosome>
+     * 
+     * @param items ArrayList<items> - represents the list of items that the Chromosomes will be using
+     * @param populationSize int - represents the amount of individuals in  ArrayList<Chromosome>
+     * @return ArrayList<Chromosome> - of the newly construced Chromosomes
+     */
     public static ArrayList<Chromosome> initializePopulation(ArrayList<Item> items, int populationSize) {
         ArrayList<Chromosome> initialPop = new ArrayList<>();
 
