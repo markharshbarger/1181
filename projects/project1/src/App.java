@@ -4,13 +4,14 @@ import java.util.Collections;
 
 public class App {
     public static void main(String[] args) throws FileNotFoundException {
-        // String fileLocation = "/home/goldeye/1181/projects/project1/textfiles/Items.txt"; // 3400
+        // enter the file location of the .txt file
         String fileLocation = "/home/goldeye/1181/projects/project1/textfiles/more_Items.txt"; // answer is ~7600
+
         ArrayList<Chromosome> currentGen = GeneticAlgorithm.initializePopulation(GeneticAlgorithm.readData(fileLocation), 10);
         ArrayList<Chromosome> nextGen = new ArrayList<>();
 
-        // set cycles ran, 20 works for smaller arraylist, but the bigger arraylist takes at least ~2000 for a better reading, I use 10000
-        // and it has given me the correct answer every time I've ran it
+        // set cycles ran. 20 works for smaller arraylist, but the bigger arraylist takes at least ~2000 for a better reading, I use 10000
+        // and it has given me the correct answer every time I've ran it and doesn't take long to run
         int amountOfGen = 10000;
 
         for (int i = 0; i < amountOfGen; ++i) {
@@ -36,6 +37,7 @@ public class App {
             Collections.sort(nextGen);
             currentGen.clear();
             
+            // transfer next gen to current gen
             for (int l = 0; l < 10; ++l) {
                 currentGen.add(nextGen.get(l));
             }
