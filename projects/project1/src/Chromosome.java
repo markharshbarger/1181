@@ -67,7 +67,7 @@ public class Chromosome extends ArrayList<Item> implements Comparable<Chromosome
     
     /**
      * Mutates the items in the object's ArrayList. Each item has a 10% chance that it will be
-     * mutated (invert the current boolean value included)
+     * mutated (invert the 'included' boolean value)
      */
     public void mutate() {
         rng = new Random();
