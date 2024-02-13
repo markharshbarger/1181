@@ -3,12 +3,18 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * Class represents a program that allows the user to convert Celsius to Fahrenheit or vice versa. 
+ */
 public class MyFrame extends JFrame {
     private JTextField celsiusField;
     private JTextField fahrenheitField;
     private JTextField lastEdited;
     private int textFieldLength = 10;
 
+    /**
+     * Constructor of MyFrame. Creates all the components and sets the default parameters for a JFrame
+     */
     public MyFrame() {
         this.createComponents();
 
@@ -18,6 +24,11 @@ public class MyFrame extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Creates the components for the JFrame. Has 3 JPanel's; 2 JPanel's have a JLabel with a JTextField for user input. Other JPanel
+     * has a JButton. The 2 JPanels with a JTextField include a KeyListerner that allows the program to keep track the last field edited
+     * by user. JButton perfoms a calculation between one field to another field when clicked.
+     */
     public void createComponents() {
         JPanel fahrenheitPanel = new JPanel();
         this.add(fahrenheitPanel);
@@ -56,14 +67,30 @@ public class MyFrame extends JFrame {
         buttonPanel.add(convertButton);
     }
 
+    /**
+     * Converts Celsius to Fahrenheit
+     * 
+     * @param celsius int - represents the temperature in Celsuis
+     * @return int - of the converted temperature in Fahrenheit
+     */
     private int celsiusToFahrenheit(int celsius) {
         return (celsius * 9 / 5) + 32;
     }
 
+    /**
+     * Converts Fahrenheit to Celsius
+     * 
+     * @param fahrenheit int - represents the temperature in Fahrenheit
+     * @return int - of the converted temperature in Celsuis
+     */
     private int fahrenheitToCelsius(int fahrenheit) {
         return (fahrenheit - 32) * 5 / 9;
     }
 
+    /**
+     * Convert's the input from one JTextField and outputs the converted temperature to the other JTextField. Includes exception
+     * handling if the input isn't an int.
+     */
     private void convertInput() {
         if (lastEdited == celsiusField) {
             int celsiusInput;
