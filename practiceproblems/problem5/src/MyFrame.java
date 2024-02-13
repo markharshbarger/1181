@@ -8,6 +8,7 @@ public class MyFrame extends JFrame {
     private JTextField fahrenheitField;
     private JTextField lastEdited;
     private int textFieldLength = 10;
+
     public MyFrame() {
         this.createComponents();
 
@@ -49,27 +50,7 @@ public class MyFrame extends JFrame {
 
 
         JButton convertButton = new JButton("Convert");
-        convertButton.addActionListener(e -> {
-            if (lastEdited == celsiusField) {
-                int celsiusInput;
-                try {
-                    celsiusInput = celsiusToFahrenheit(Integer.parseInt(celsiusField.getText()));
-                } catch (NumberFormatException exception) {
-                    celsiusField.setText("A whole number!");
-                    return;
-                }
-                fahrenheitField.setText(String.valueOf(celsiusInput));
-            } else if (lastEdited == fahrenheitField) {
-                int fahrenheitInput;
-                try {
-                    fahrenheitInput = fahrenheitToCelsius(Integer.parseInt(fahrenheitField.getText()));
-                } catch (NumberFormatException exception) {
-                    fahrenheitField.setText("A whole number!");
-                    return;
-                }
-                celsiusField.setText(String.valueOf(fahrenheitInput));
-            }
-        });
+        convertButton.addActionListener(e -> convertInput());
         JPanel buttonPanel = new JPanel();
         this.add(buttonPanel);
         buttonPanel.add(convertButton);
@@ -81,5 +62,27 @@ public class MyFrame extends JFrame {
 
     private int fahrenheitToCelsius(int fahrenheit) {
         return (fahrenheit - 32) * 5 / 9;
+    }
+
+    private void convertInput() {
+        if (lastEdited == celsiusField) {
+            int celsiusInput;
+            try {
+                celsiusInput = celsiusToFahrenheit(Integer.parseInt(celsiusField.getText()));
+            } catch (NumberFormatException exception) {
+                celsiusField.setText("A whole number!");
+                return;
+            }
+            fahrenheitField.setText(String.valueOf(celsiusInput));
+        } else if (lastEdited == fahrenheitField) {
+            int fahrenheitInput;
+            try {
+                fahrenheitInput = fahrenheitToCelsius(Integer.parseInt(fahrenheitField.getText()));
+            } catch (NumberFormatException exception) {
+                fahrenheitField.setText("A whole number!");
+                return;
+            }
+            celsiusField.setText(String.valueOf(fahrenheitInput));
+        }
     }
 }
