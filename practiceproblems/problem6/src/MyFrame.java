@@ -21,8 +21,18 @@ public class MyFrame extends JFrame {
 
         for (int i = 1; i <= 9; ++i) {
             JButton tmpButton = new JButton(String.valueOf(i));
+
             tmpButton.addActionListener(e -> {
-                
+                String buttonText = tmpButton.getText();
+                if (buttonText.equals("X") || buttonText.equals("O")) {
+                    return;
+                } else if (currentPlayerTurn.getText().equals(playerOneTurn)) {
+                    tmpButton.setText("X");
+                    currentPlayerTurn.setText(playerTwoTurn);
+                } else {
+                    tmpButton.setText("O");
+                    currentPlayerTurn.setText(playerOneTurn);
+                }
             });
             buttonPanel.add(tmpButton);
         }
@@ -32,15 +42,5 @@ public class MyFrame extends JFrame {
         currentPlayerTurn = new JLabel(playerOneTurn);
         playerTurnPanel.add(currentPlayerTurn);
         this.add(playerTurnPanel, BorderLayout.SOUTH);
-
-        currentPlayerTurn.setText(playerTwoTurn);
-    }
-
-}
-
-class ButtonPressed {
-    private boolean buttonPressed;
-    public ButtonPresssed() {
-        buttonPressed = false;
     }
 }
