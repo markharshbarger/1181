@@ -36,7 +36,7 @@ public class DeckOfCards {
     public Card drawCardFaceDown() {
         if (!deck.isEmpty()) {
             Card topCard = deck.get(0);
-            topCard.setfaceUp(false);
+            topCard.setFaceUp(false);
             deck.remove(0);
             return topCard;
         }
@@ -44,7 +44,7 @@ public class DeckOfCards {
         System.out.println("New Deck");
         initializeDeck();
         Card topCard = deck.get(0);
-        topCard.setfaceUp(false);
+        topCard.setFaceUp(false);
         deck.remove(0);
         return topCard;
     }

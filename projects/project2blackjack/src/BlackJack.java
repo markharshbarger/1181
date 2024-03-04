@@ -15,6 +15,8 @@ public class BlackJack {
     private int bank;
     private HandObserver handObserver;
     private HouseHandObserver househandObserver;
+    private boolean stand;
+    private GameWindow GUI;
 
     // set later
     public BlackJack() {
@@ -27,13 +29,22 @@ public class BlackJack {
         this.househandObserver = houseHandObserver;
         houseHand = new Hand();
         mainDeck = new DeckOfCards();
+        stand = false;
         bank = 300;
     }
 
     public void play() {
         deal();
-        // bet();
-        // houseReveal();
+
+        GUI.setHitAndStandButton(true);
+        while (GUI.standButton() == true) {
+            if (playerHand.value() > 21) {
+                break;
+            }
+        }
+        GUI.setHitAndStandButton(false);
+
+        houseReveal();
         // houseBet();
         // System.out.println(winner());
         // pause();
@@ -52,43 +63,20 @@ public class BlackJack {
     }
 
 
-    // private void bet() {
-    //     while (playerHand.totalHandValue() < 21) {
-    //         System.out.println("Hit or Stand");
-    //         String bet = userInput.nextLine();
-    //         if (userValidateBet(bet)) {
-    //             playerHand.addCard(mainDeck.drawCard());
-    //             playerHandObserver.handChange();
-    //             if (playerHand.getBust()) {
-    //                 System.out.println("Bust");
-    //             }
-    //         } else {
-    //             reveal();
-    //             break;
-    //         }
-    //     }
-    // }
+    public void bet() {
+        if (playerHand.value() < 21) {
+            playerHand.addCard(mainDeck.drawCard());
+                if (playerHand.getBust()) {
+                    System.out.println("Bust");
+                }
+            handObserver.handChange();
+        }
+    }
 
-    // private boolean userValidateBet(String bet) {
-    //     while (true) {
-    //         bet = bet.toLowerCase();
-    //         if (bet.charAt(0) == 'h') {
-    //             return true;
-    //         } else if (bet.charAt(0) == 's') {
-    //             return false;
-    //         } else {
-    //             System.out.println("Please type one");
-    //             bet = userInput.nextLine(); // gets bet again
-    //         }
-    //     }
-    // }
-
-    // private void houseReveal() {
-    //     clearScreen();
-    //     System.out.print("You ");
-    //     for (Card card : playerHand.returnHand()) {
-    //         System.out.print(card + " ");
-    //     }
+    private void houseReveal() {
+        houseHand.getCard(0).setFaceUp(true);
+        househandObserver.houseHandChange();
+    }
 
     //     System.out.print(": total " + playerHand.totalHandValue() + "     |     House ");
     //     for (Card card : houseHand.returnHand()) {
@@ -137,11 +125,19 @@ public class BlackJack {
         } 
     }
 
-    public ArrayList<Card> getPlayerHand() {
-        return playerHand.getHand();
+    public Hand getPlayerHand() {
+        return playerHand;
     }
 
-    public ArrayList<Card> getHouseHand() {
-        return houseHand.getHand();
+    public Hand getHouseHand() {
+        return houseHand;
+    }
+
+    public int getBank() {
+        return bank;
+    }
+
+    public void addGUI(GameWindow GUI) {
+        this.GUI = GUI;
     }
 }

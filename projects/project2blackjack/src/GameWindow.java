@@ -6,16 +6,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-// "https://stackoverflow.com/questions/60891289/update-gui-in-response-to-model-changes" used this to understand how to seperate game logic
-// and GUI
 public class GameWindow extends JFrame {
     // variables
+    private BlackJack game;
     private final Color tableColor = new Color(50, 168, 82);
+    private final Font scoreFont = new Font("Arial", Font.BOLD, 37);
     private JLabel bankLabel;
+    private JLabel playerScoreLabel;
+    private JLabel houseScoreLabel;
     private JPanel housePanel;
     private JPanel playerPanel;
-    private BlackJack game;
     private JPanel centerPanel;
+    JButton hitButton;
+    JButton standButton;
 
     public GameWindow(BlackJack game) {
         bankLabel = new JLabel();
@@ -31,10 +34,10 @@ public class GameWindow extends JFrame {
 
     private void createComponents() {
         JPanel buttonPanel = new JPanel();
-        JButton hitButton = new JButton("Hit");
-        JButton standButton = new JButton("Stand");
-        // hitButton.addActionListener(e -> hitButton());
-        // standButton.addActionListener(e -> standButton());
+        hitButton = new JButton("Hit");
+        standButton = new JButton("Stand");
+        hitButton.addActionListener(e -> hitButton());
+        standButton.addActionListener(e -> standButton());
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
         this.add(buttonPanel, BorderLayout.SOUTH);
@@ -45,9 +48,14 @@ public class GameWindow extends JFrame {
         infoPanel.add(bankLabel);
         this.add(infoPanel, BorderLayout.NORTH);
 
+        playerScoreLabel = new JLabel("0");
+        playerScoreLabel.setFont(scoreFont);
+        houseScoreLabel = new JLabel("0");
+        houseScoreLabel.setFont(scoreFont);
+
         centerPanel = new JPanel(new GridLayout(2,1));
-        playerPanel = new JPanel();
-        housePanel = new JPanel();
+        playerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        housePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         playerPanel.setBackground(tableColor);
         housePanel.setBackground(tableColor);
         centerPanel.add(housePanel);
@@ -55,8 +63,7 @@ public class GameWindow extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
-    // used 'https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel' to add pictures
-    // used 'https://opengameart.org/content/playing-cards-1' for playing card images, but had to crop each card into its own file
+
 
     // private void addCardToPlayerPanel (ArrayList<Card> hand) {
     //     BufferedImage cardPicture;
@@ -74,36 +81,57 @@ public class GameWindow extends JFrame {
     //     updateGraphics();
     // }
 
-    public void refreshHouseHand(ArrayList<Card> hand) {
+    private void hitButton() {
+        game.bet();
+        System.out.println("Betting");
+    }
+
+    public void setHitAndStandButton(boolean value) {
+        hitButton.setEnabled(value);
+        standButton.setEnabled(value);
+    }
+
+    public boolean standButton() {
+        System.out.println("Standing");
+        return true;
+    }
+
+    public void refreshHouseHand(Hand hand) {
         BufferedImage cardPicture;
         housePanel.removeAll();
-        for (Card i : hand) {
+        ArrayList<Card> cardList = hand.getHand();
+        for (Card card : cardList) {
             JLabel picLabel = null;
             try {
-                cardPicture = ImageIO.read(new File(i.getFileLocation()));
+                cardPicture = ImageIO.read(new File(card.getFileLocation()));
                 picLabel = new JLabel(new ImageIcon(cardPicture));
             } catch (IOException e) {
                 System.out.println("Error getting card image");
             }
             housePanel.add(picLabel);
         }
+        houseScoreLabel.setText(String.valueOf(hand.value()));
+        housePanel.add(houseScoreLabel);
         updateGraphics();
         System.out.println("dealing to House");
     }
 
-    public void refreshPlayerHand(ArrayList<Card> hand) {
+    public void refreshPlayerHand(Hand hand) {
         BufferedImage cardPicture;
         playerPanel.removeAll();
-        for (Card i : hand) {
+        ArrayList<Card> cardList = hand.getHand();
+        for (Card card : cardList) {
             JLabel picLabel = null;
             try {
-                cardPicture = ImageIO.read(new File(i.getFileLocation()));
+                cardPicture = ImageIO.read(new File(card.getFileLocation()));
                 picLabel = new JLabel(new ImageIcon(cardPicture));
             } catch (IOException e) {
                 System.out.println("Error getting card image");
             }
             playerPanel.add(picLabel);
         }
+        playerScoreLabel.setText(String.valueOf(hand.value()));
+        playerPanel.add(playerScoreLabel);
         updateGraphics();
         System.out.println("dealing to Player");
     }

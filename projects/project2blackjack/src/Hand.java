@@ -40,7 +40,7 @@ public class Hand {
         return this.hand.get(index);
     }
 
-    public int totalHandValue() {
+    public int value() {
         int total = 0;
         int numOfAce = 0;
         for (Card card : hand) {
@@ -69,7 +69,7 @@ public class Hand {
     }
 
     public boolean getBust() {
-        if (totalHandValue() > 21) {
+        if (value() > 21) {
             this.bust = true;
         }
         return this.bust;

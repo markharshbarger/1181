@@ -37,7 +37,7 @@ public class Card {
         return faceUp;
     }
 
-    public void setfaceUp(boolean value) {
+    public void setFaceUp(boolean value) {
         this.faceUp = value;
 
         if (value == false) {
