@@ -1,12 +1,9 @@
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Hand {
     private ArrayList<Card> hand = new ArrayList<>();
     private boolean bust;
-    private PropertyChangeSupport support;
     public HashMap<Rank, Integer> cardValues = new HashMap<Rank, Integer>() {{
         put(Rank.TWO, 2);
         put(Rank.THREE, 3);
@@ -25,20 +22,10 @@ public class Hand {
 
     public Hand() {
         this.bust = false;
-        support = new PropertyChangeSupport(this);
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
     }
 
     public void addCard(Card card) {
         this.hand.add(card);
-        support.firePropertyChange("hand", null, this.hand);
     }
 
     public int numOfCards() {
@@ -73,7 +60,6 @@ public class Hand {
     }
 
     public void clearHand() {
-        support.firePropertyChange("hand", this.hand, null);
         this.hand.clear();
         this.bust = false;
     }
