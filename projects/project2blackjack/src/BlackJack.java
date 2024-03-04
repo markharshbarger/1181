@@ -113,18 +113,11 @@ public class BlackJack {
     private void getPlayerInput() {
         GUI.setHitAndStandButton(true);
         while (playerHand.value() < 21 && !stand && !playerHand.getBust()) {
-            // if (stand == true) {
-            //     stand = false;
-            //     GUI.setHitAndStandButton(false);
-            //     return;
-            // } 
-
-            // if (playerHand.getBust() == true) {
-            //     stand = false;
-            //     GUI.setHitAndStandButton(false);    
-            //     return;
-            // }
+            // I don't know why but without this after a couple of hands it
+            // automatically skips userInput part and just shows house hand
+            System.out.println(playerHand.value());
         }
+        stand = false;
         GUI.setHitAndStandButton(false);
     }
     private void pause() {
