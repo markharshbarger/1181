@@ -1,11 +1,24 @@
+import java.util.ArrayList;
+
+interface HandObserver {
+    void handChange();
+}
+
 public class BlackJack {
     private Hand playerHand;
     private HouseHand houseHand;
     private DeckOfCards mainDeck;
     private int bank;
+    private HandObserver handObserver;
 
-    BlackJack() {
+    // set later
+    public BlackJack() {
+
+    }
+
+    public BlackJack(HandObserver handObserver) {
         playerHand = new Hand();
+        this.handObserver = handObserver;
         houseHand = new HouseHand();
         mainDeck = new DeckOfCards();
         bank = 300;
@@ -24,8 +37,9 @@ public class BlackJack {
 
     private void deal() {
         for (int i = 0; i < 2; ++i) {
-            playerHand.addCard(mainDeck.drawCard());
             houseHand.addCard(mainDeck.drawCard());
+            playerHand.addCard(mainDeck.drawCard());
+            handObserver.handChange();
         }
     }
 
@@ -39,7 +53,7 @@ public class BlackJack {
             String bet = userInput.nextLine();
             if (userValidateBet(bet)) {
                 playerHand.addCard(mainDeck.drawCard());
-                reveal();
+                playerHandObserver.handChange();
                 if (playerHand.getBust()) {
                     System.out.println("Bust");
                 }
@@ -106,6 +120,7 @@ public class BlackJack {
 
     private void clearHand() {
         playerHand.clearHand();
+        playerHandObserver.handChange();
         houseHand.clearHand();
     }
 
@@ -115,5 +130,9 @@ public class BlackJack {
         } catch (InterruptedException e){
             Thread.currentThread().interrupt();
         } 
+    }
+
+    public ArrayList<Card> getPlayerHand() {
+        return playerHand.getHand();
     }
 }

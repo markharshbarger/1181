@@ -14,9 +14,11 @@ public class GameWindow extends JFrame {
     private JLabel bankLabel;
     private JPanel housePanel;
     private JPanel playerPanel;
+    private BlackJack game;
 
-    public GameWindow() {
+    public GameWindow(BlackJack game) {
         bankLabel = new JLabel();
+        this.game = game;
         this.setLayout(new BorderLayout());
         this.createComponents();
         this.setTitle("Black Jack");
@@ -24,16 +26,14 @@ public class GameWindow extends JFrame {
         this.setSize(1000, 1000);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
-        this.mainGameLoop();
     }
 
     private void createComponents() {
         JPanel buttonPanel = new JPanel();
         JButton hitButton = new JButton("Hit");
         JButton standButton = new JButton("Stand");
-        hitButton.addActionListener(e -> hitButton());
-        standButton.addActionListener(e -> standButton());
+        // hitButton.addActionListener(e -> hitButton());
+        // standButton.addActionListener(e -> standButton());
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
         this.add(buttonPanel, BorderLayout.SOUTH);
@@ -54,65 +54,42 @@ public class GameWindow extends JFrame {
 
     // used 'https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel' to add pictures
     // used 'https://opengameart.org/content/playing-cards-1' for playing card images, but had to crop each card into its own file
-    private void mainGameLoop() {
-        BlackJack game = new BlackJack();
-        game.play();
+
+    // private void addCardToPlayerPanel (ArrayList<Card> hand) {
+    //     BufferedImage cardPicture;
+    //     for (Card i : hand) {
+    //         JLabel picLabel = null;
+    //         try {
+    //             cardPicture = ImageIO.read(new File(i.getFileLocation()));
+    //             picLabel = new JLabel(new ImageIcon(cardPicture));
+    //         } catch (IOException e) {
+    //             // TODO Auto-generated catch block
+    //             e.printStackTrace();
+    //         }
+    //         playerPanel.add(picLabel);
+    //     }
+    //     updateGraphics();
+    // }
+
+    public void dealToHouse(Card card) {
+
     }
 
-    private void addCardToPlayerPanel (ArrayList<Card> hand) {
+    public void refreshPlayerHand(ArrayList<Card> hand) {
         BufferedImage cardPicture;
+        playerPanel.removeAll();
         for (Card i : hand) {
             JLabel picLabel = null;
             try {
                 cardPicture = ImageIO.read(new File(i.getFileLocation()));
                 picLabel = new JLabel(new ImageIcon(cardPicture));
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("Error getting card image");
             }
             playerPanel.add(picLabel);
         }
         updateGraphics();
-    }
-
-    public void dealToHouse(Card card) {
-
-    }
-
-    private void addCardToHousePanel(ArrayList<Card> hand) {
-        BufferedImage cardPicture;
-        for (Card i : hand) {
-            JLabel picLabel = null;
-            try {
-                cardPicture = ImageIO.read(new File("src/CardImages/BACK_CARD.png"));
-                picLabel = new JLabel(new ImageIcon(cardPicture));
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            housePanel.add(picLabel);
-        }
-        updateGraphics();
-    }
-
-    public void dealToHouseFaceDown() {
-
-    }
-
-    private void addFaceDownCardToHouse() {
-
-    }
-
-    public void revealHouseCard(Card card) {
-        
-    }
-
-    public boolean hitButton() {
-        return true;
-    }
-
-    public boolean standButton() {
-        return true;
+        System.out.println("dealing to Player");
     }
 
     public void updateGraphics() {

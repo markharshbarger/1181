@@ -32,7 +32,7 @@ public class Hand {
         return this.hand.size();
     }
 
-    public ArrayList<Card> returnHand() {
+    public ArrayList<Card> getHand() {
         return this.hand;
     }
 
