@@ -11,6 +11,7 @@ public class GameWindow extends JFrame {
     private BlackJack game;
     private final Color tableColor = new Color(50, 168, 82);
     private final Font scoreFont = new Font("Arial", Font.BOLD, 37);
+    private final Font ButtonFont = new Font("Serif", Font.BOLD, 27);
     private JLabel bankLabel;
     private JLabel playerScoreLabel;
     private JLabel houseScoreLabel;
@@ -36,6 +37,8 @@ public class GameWindow extends JFrame {
         JPanel buttonPanel = new JPanel();
         hitButton = new JButton("Hit");
         standButton = new JButton("Stand");
+        hitButton.setFont(ButtonFont);
+        standButton.setFont(ButtonFont);
         hitButton.addActionListener(e -> hitButton());
         standButton.addActionListener(e -> standButton());
         setHitAndStandButton(false);
@@ -65,8 +68,8 @@ public class GameWindow extends JFrame {
     }
 
     private void hitButton() {
-        game.bet();
         System.out.println("Betting");
+        game.bet();
     }
 
     public void setHitAndStandButton(boolean value) {
@@ -76,7 +79,7 @@ public class GameWindow extends JFrame {
 
     private void standButton() {
         System.out.println("Standing");
-        game.setStand(true);
+        game.stand();
     }
 
     public void refreshHouseHand(Hand hand) {
@@ -96,7 +99,7 @@ public class GameWindow extends JFrame {
         houseScoreLabel.setText(String.valueOf(hand.value()));
         housePanel.add(houseScoreLabel);
         updateGraphics();
-        System.out.println("dealing to House");
+        System.out.println("refreshing house");
     }
 
     public void refreshPlayerHand(Hand hand) {
@@ -116,7 +119,7 @@ public class GameWindow extends JFrame {
         playerScoreLabel.setText(String.valueOf(hand.value()));
         playerPanel.add(playerScoreLabel);
         updateGraphics();
-        System.out.println("dealing to Player");
+        System.out.println("refreshing Player");
     }
 
     public void updateGraphics() {

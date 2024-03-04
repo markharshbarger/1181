@@ -13,7 +13,6 @@ public class BlackJack {
     private int bank;
     private HandObserver handObserver;
     private HouseHandObserver househandObserver;
-    private boolean stand;
     private GameWindow GUI;
 
     // set later
@@ -27,18 +26,23 @@ public class BlackJack {
         this.househandObserver = houseHandObserver;
         houseHand = new Hand();
         mainDeck = new DeckOfCards();
-        stand = false;
         bank = 300;
     }
 
     public void play() {
         deal();
         getPlayerInput();
+        // houseReveal();
+        // houseBet();
+        // // System.out.println(winner());
+        // pause(1.7);
+        // clearHand();
+    }
+
+    public void houseTurn() {
         houseReveal();
+        pause(.75);
         houseBet();
-        // System.out.println(winner());
-        pause(1.7);
-        clearHand();
     }
 
     private void deal() {
@@ -56,11 +60,18 @@ public class BlackJack {
     public void bet() {
         if (playerHand.value() < 21) {
             playerHand.addCard(mainDeck.drawCard());
-                if (playerHand.getBust()) {
-                    System.out.println("Bust");
-                }
             handObserver.handChange();
+            pause(.75);
+            if (playerHand.value() >= 21) {
+                stand();
+            }
+            return;
         }
+    }
+
+    public void stand() {
+        GUI.setHitAndStandButton(false);
+        houseTurn();
     }
 
     private void houseReveal() {
@@ -68,23 +79,14 @@ public class BlackJack {
         househandObserver.houseHandChange();
     }
 
-    //     System.out.print(": total " + playerHand.totalHandValue() + "     |     House ");
-    //     for (Card card : houseHand.returnHand()) {
-    //         System.out.print(card + " ");
-    //     }
-    //     System.out.println(" : total " + houseHand.totalHandValue());
-    // }
-
     private void houseBet() {
         while (houseHand.value() < 17) {
-            pause(.75);
+            pause(.5);
             houseHand.addCard(mainDeck.drawCard());
             househandObserver.houseHandChange();
             if (houseHand.getBust()) {
                 System.out.println(" House Bust");
             }
-
-            // did same thing just in case it causes less bugs
             System.out.println(houseHand.value());
         }
     }
@@ -113,18 +115,11 @@ public class BlackJack {
     }
 
     private void getPlayerInput() {
-        GUI.setHitAndStandButton(true);
-        while (playerHand.value() < 21 && !stand && !playerHand.getBust()) {
-
-            // I don't know why but without this after a couple of hands it
-            // automatically skips userInput part and just shows house hand
-            // maybe it helps refresh playerHand.value()?
-            System.out.println(playerHand.value());
+        if (playerHand.value() >= 21) {
+            stand();
+            return;
         }
-        // if it already matches on of the criteria
-        System.out.println(playerHand.value());
-        stand = false;
-        GUI.setHitAndStandButton(false);
+        GUI.setHitAndStandButton(true);
     }
 
     private <T extends Number> void pause(T value) {
@@ -150,9 +145,5 @@ public class BlackJack {
 
     public void addGUI(GameWindow GUI) {
         this.GUI = GUI;
-    }
-
-    public void setStand(boolean value) {
-        stand = value;
     }
 }

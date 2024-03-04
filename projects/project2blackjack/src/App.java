@@ -2,6 +2,7 @@
 // used 'https://opengameart.org/content/playing-cards-1' for playing card images, but had to crop each card into its own file
 // "https://stackoverflow.com/questions/60891289/update-gui-in-response-to-model-changes" used this to understand how to seperate game logic
 // and GUI
+// used 'https://www.baeldung.com/java-thread-safety' becuase I would sometimes get an error with thread synchronation and ArrayList
 public class App implements HandObserver, HouseHandObserver {
     // Name: Mark Harshbarger
     // WSU email: harshbarger.26@wright.ed
@@ -11,9 +12,7 @@ public class App implements HandObserver, HouseHandObserver {
         gameLogic = new BlackJack(this, this);
         gameGUI = new GameWindow(gameLogic);
         gameLogic.addGUI(gameGUI);
-        while (true) {
-            gameLogic.play();
-        }
+        gameLogic.play();
     }
 
     @Override
