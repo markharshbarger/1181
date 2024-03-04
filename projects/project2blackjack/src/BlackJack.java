@@ -37,11 +37,12 @@ public class BlackJack {
         deal();
 
         GUI.setHitAndStandButton(true);
-        while (GUI.standButton() == true) {
-            if (playerHand.value() > 21) {
+        while (playerHand.value() <= 21) {
+            if (stand == true) {
                 break;
             }
         }
+        stand = false;
         GUI.setHitAndStandButton(false);
 
         houseReveal();
@@ -139,5 +140,9 @@ public class BlackJack {
 
     public void addGUI(GameWindow GUI) {
         this.GUI = GUI;
+    }
+
+    public void setStand(boolean value) {
+        stand = value;
     }
 }

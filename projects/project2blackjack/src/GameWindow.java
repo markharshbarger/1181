@@ -91,9 +91,9 @@ public class GameWindow extends JFrame {
         standButton.setEnabled(value);
     }
 
-    public boolean standButton() {
+    private void standButton() {
         System.out.println("Standing");
-        return true;
+        game.setStand(true);
     }
 
     public void refreshHouseHand(Hand hand) {
