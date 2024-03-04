@@ -1,12 +1,19 @@
 public class Card {
     private final Rank rank;
     private final Suit suit;
-    private String fileLocation = "src/CardImages/";
+    private final String imageFolderLocation = "src/CardImages/";
+    private String fileLocation;
+    private boolean faceUp;
 
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
-        this.fileLocation += this.rank + "_" + this.suit + ".png";
+        this.fileLocation = getFaceUpFileLocation();
+        faceUp = true;
+    }
+
+    private String getFaceUpFileLocation() {
+        return this.imageFolderLocation + this.rank + "_" + this.suit + ".png";
     }
 
     @Override
@@ -24,5 +31,20 @@ public class Card {
 
     public String getFileLocation() {
         return this.fileLocation;
+    }
+
+    public boolean getfaceUp() {
+        return faceUp;
+    }
+
+    public void setfaceUp(boolean value) {
+        this.faceUp = value;
+
+        if (value == false) {
+            fileLocation = this.imageFolderLocation + "BACK_CARD.png";
+        } else {
+            fileLocation = getFaceUpFileLocation();
+        }
+
     }
 }

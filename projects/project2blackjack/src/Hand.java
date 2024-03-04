@@ -44,6 +44,10 @@ public class Hand {
         int total = 0;
         int numOfAce = 0;
         for (Card card : hand) {
+            // doesn't include facedown cards in hand value
+            if (card.getfaceUp() == false) {
+                continue;
+            }
             total += cardValues.get(card.getRank());
 
             if (card.getRank() == Rank.ACE) {

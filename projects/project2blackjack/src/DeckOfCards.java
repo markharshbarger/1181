@@ -18,6 +18,7 @@ public class DeckOfCards {
         shuffle();
     }
 
+    // change the secure random
     public void shuffle() {
         Collections.shuffle(deck, new SecureRandom());
     }
@@ -30,6 +31,22 @@ public class DeckOfCards {
         System.out.println("New Deck");
         initializeDeck();
         return deck.remove(0);
+    }
+
+    public Card drawCardFaceDown() {
+        if (!deck.isEmpty()) {
+            Card topCard = deck.get(0);
+            topCard.setfaceUp(false);
+            deck.remove(0);
+            return topCard;
+        }
+
+        System.out.println("New Deck");
+        initializeDeck();
+        Card topCard = deck.get(0);
+        topCard.setfaceUp(false);
+        deck.remove(0);
+        return topCard;
     }
 
     public ArrayList<Card> getDeck() {

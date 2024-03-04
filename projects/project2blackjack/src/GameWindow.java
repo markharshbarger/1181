@@ -15,6 +15,7 @@ public class GameWindow extends JFrame {
     private JPanel housePanel;
     private JPanel playerPanel;
     private BlackJack game;
+    private JPanel centerPanel;
 
     public GameWindow(BlackJack game) {
         bankLabel = new JLabel();
@@ -44,12 +45,14 @@ public class GameWindow extends JFrame {
         infoPanel.add(bankLabel);
         this.add(infoPanel, BorderLayout.NORTH);
 
+        centerPanel = new JPanel(new GridLayout(2,1));
         playerPanel = new JPanel();
         housePanel = new JPanel();
         playerPanel.setBackground(tableColor);
         housePanel.setBackground(tableColor);
-        this.add(housePanel, BorderLayout.CENTER);
-        this.add(playerPanel, BorderLayout.CENTER);
+        centerPanel.add(housePanel);
+        centerPanel.add(playerPanel);
+        this.add(centerPanel, BorderLayout.CENTER);
     }
 
     // used 'https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel' to add pictures
@@ -71,8 +74,21 @@ public class GameWindow extends JFrame {
     //     updateGraphics();
     // }
 
-    public void dealToHouse(Card card) {
-
+    public void refreshHouseHand(ArrayList<Card> hand) {
+        BufferedImage cardPicture;
+        playerPanel.removeAll();
+        for (Card i : hand) {
+            JLabel picLabel = null;
+            try {
+                cardPicture = ImageIO.read(new File(i.getFileLocation()));
+                picLabel = new JLabel(new ImageIcon(cardPicture));
+            } catch (IOException e) {
+                System.out.println("Error getting card image");
+            }
+            housePanel.add(picLabel);
+        }
+        updateGraphics();
+        System.out.println("dealing to House");
     }
 
     public void refreshPlayerHand(ArrayList<Card> hand) {
