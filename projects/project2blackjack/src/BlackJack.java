@@ -121,6 +121,8 @@ public class BlackJack {
             // maybe it helps refresh playerHand.value()?
             System.out.println(playerHand.value());
         }
+        // if it already matches on of the criteria
+        System.out.println(playerHand.value());
         stand = false;
         GUI.setHitAndStandButton(false);
     }
