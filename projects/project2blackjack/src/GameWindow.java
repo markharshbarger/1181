@@ -76,7 +76,7 @@ public class GameWindow extends JFrame {
 
     public void refreshHouseHand(ArrayList<Card> hand) {
         BufferedImage cardPicture;
-        playerPanel.removeAll();
+        housePanel.removeAll();
         for (Card i : hand) {
             JLabel picLabel = null;
             try {

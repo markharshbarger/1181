@@ -44,7 +44,8 @@
 //                         "3. The person with the highest score, without going over 21 wins.\n" +
 //                         "4. Numbered cards values follow their number.\n" + 
 //                         "5. Jack is 11, Queen is 12, King is 13, Ace is 14 or 1.\n" +
-//                         "6. The program automatically chooses Ace value based on which one helps you the best.";
+//                         "6. The program automatically chooses Ace value based on which one helps you the best." +
+//                         "7. The House always wins";
 //         ruleTextArea.setText(rules);
 
 //         Font ruleFont = new Font("Rule Font", Font.ROMAN_BASELINE, 16);
