@@ -32,17 +32,15 @@ public class BlackJack {
     public void play() {
         deal();
         getPlayerInput();
-        // houseReveal();
-        // houseBet();
-        // // System.out.println(winner());
-        // pause(1.7);
         // clearHand();
     }
 
     public void houseTurn() {
         houseReveal();
         pause(.75);
+        // houseBet includes pauses
         houseBet();
+        revealWinner();
     }
 
     private void deal() {
@@ -57,7 +55,7 @@ public class BlackJack {
     }
 
 
-    public void bet() {
+    public void hit() {
         if (playerHand.value() < 21) {
             playerHand.addCard(mainDeck.drawCard());
             handObserver.handChange();
@@ -91,21 +89,26 @@ public class BlackJack {
         }
     }
 
-    // private String winner() {
-    //     if (houseHand.getBust() && playerHand.getBust()) {
-    //         return "Everyone lost";
-    //     } else if (houseHand.totalHandValue() == playerHand.totalHandValue()) {
-    //         return "Tie";
-    //     } else if (houseHand.getBust() && !playerHand.getBust()) {
-    //         return "You win";
-    //     } else if (!houseHand.getBust() && playerHand.getBust()) {
-    //         return "House wins";
-    //     } else if (houseHand.totalHandValue() > playerHand.totalHandValue()) {
-    //         return "House wins";
-    //     } else {
-    //         return "You win";
-    //     }
-    // }
+    private void revealWinner() {
+        if (houseHand.getBust() && playerHand.getBust()) {
+            System.out.println("Both lost");
+        } else if (houseHand.value() == playerHand.value()) {
+            System.out.println("Tie");
+        } else if (houseHand.getBust() && !playerHand.getBust()) {
+            System.out.println("You win");
+        } else if (!houseHand.getBust() && playerHand.getBust()) {
+            System.out.println("House wins");
+        } else if (houseHand.value() > playerHand.value()) {
+            System.out.println("House wins");
+        } else {
+            System.out.println("You win");
+        }
+        // add bet button next
+        // pause(1.5);
+        // clearHand();
+        // pause(0.2);
+        // play();
+    }
 
     private void clearHand() {
         playerHand.clearHand();

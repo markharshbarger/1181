@@ -69,7 +69,7 @@ public class GameWindow extends JFrame {
 
     private void hitButton() {
         System.out.println("Betting");
-        game.bet();
+        game.hit();
     }
 
     public void setHitAndStandButton(boolean value) {
