@@ -38,6 +38,7 @@ public class GameWindow extends JFrame {
         standButton = new JButton("Stand");
         hitButton.addActionListener(e -> hitButton());
         standButton.addActionListener(e -> standButton());
+        setHitAndStandButton(false);
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
         this.add(buttonPanel, BorderLayout.SOUTH);

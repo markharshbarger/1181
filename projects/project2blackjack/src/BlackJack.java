@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 interface HandObserver {
     void handChange();
 }
@@ -36,20 +34,13 @@ public class BlackJack {
     public void play() {
         deal();
 
-        GUI.setHitAndStandButton(true);
-        while (playerHand.value() <= 21) {
-            if (stand == true) {
-                break;
-            }
-        }
-        stand = false;
-        GUI.setHitAndStandButton(false);
+        getPlayerInput();
 
         houseReveal();
         // houseBet();
         // System.out.println(winner());
-        // pause();
-        // clearHand();
+        pause();
+        clearHand();
     }
 
     private void deal() {
@@ -112,12 +103,30 @@ public class BlackJack {
     //     }
     // }
 
-    // private void clearHand() {
-    //     playerHand.clearHand();
-    //     playerHandObserver.handChange();
-    //     houseHand.clearHand();
-    // }
+    private void clearHand() {
+        playerHand.clearHand();
+        houseHand.clearHand();
+        handObserver.handChange();
+        househandObserver.houseHandChange();
+    }
 
+    private void getPlayerInput() {
+        GUI.setHitAndStandButton(true);
+        while (playerHand.value() < 21 && !stand && !playerHand.getBust()) {
+            // if (stand == true) {
+            //     stand = false;
+            //     GUI.setHitAndStandButton(false);
+            //     return;
+            // } 
+
+            // if (playerHand.getBust() == true) {
+            //     stand = false;
+            //     GUI.setHitAndStandButton(false);    
+            //     return;
+            // }
+        }
+        GUI.setHitAndStandButton(false);
+    }
     private void pause() {
         try {
             Thread.sleep(3000);

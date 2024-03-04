@@ -11,7 +11,9 @@ public class App implements HandObserver, HouseHandObserver {
         gameLogic = new BlackJack(this, this);
         gameGUI = new GameWindow(gameLogic);
         gameLogic.addGUI(gameGUI);
-        gameLogic.play();
+        while (true) {
+            gameLogic.play();
+        }
     }
 
     @Override
