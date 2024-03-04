@@ -2,8 +2,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ public class GameWindow extends JFrame {
         this.setTitle("Black Jack");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(1000, 1000);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
 
         this.mainGameLoop();
