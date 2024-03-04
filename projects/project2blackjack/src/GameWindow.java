@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GameWindow extends JFrame implements PropertyChangeListener {
+// "https://stackoverflow.com/questions/60891289/update-gui-in-response-to-model-changes" used this to understand how to seperate game logic
+// and GUI
+public class GameWindow extends JFrame {
     // variables
     private final Color tableColor = new Color(50, 168, 82);
     private JLabel bankLabel;
@@ -116,10 +118,5 @@ public class GameWindow extends JFrame implements PropertyChangeListener {
 
     public void updateGraphics() {
         SwingUtilities.updateComponentTreeUI(this);
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        this.addCardToPlayerPanel((ArrayList<Card>)evt.getNewValue());
     }
 }
