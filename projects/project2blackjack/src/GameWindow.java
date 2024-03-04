@@ -64,24 +64,6 @@ public class GameWindow extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
-
-
-    // private void addCardToPlayerPanel (ArrayList<Card> hand) {
-    //     BufferedImage cardPicture;
-    //     for (Card i : hand) {
-    //         JLabel picLabel = null;
-    //         try {
-    //             cardPicture = ImageIO.read(new File(i.getFileLocation()));
-    //             picLabel = new JLabel(new ImageIcon(cardPicture));
-    //         } catch (IOException e) {
-    //             // TODO Auto-generated catch block
-    //             e.printStackTrace();
-    //         }
-    //         playerPanel.add(picLabel);
-    //     }
-    //     updateGraphics();
-    // }
-
     private void hitButton() {
         game.bet();
         System.out.println("Betting");

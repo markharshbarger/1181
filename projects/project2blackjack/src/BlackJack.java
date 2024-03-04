@@ -33,13 +33,11 @@ public class BlackJack {
 
     public void play() {
         deal();
-
         getPlayerInput();
-
         houseReveal();
-        // houseBet();
+        houseBet();
         // System.out.println(winner());
-        pause();
+        pause(1.7);
         clearHand();
     }
 
@@ -77,15 +75,19 @@ public class BlackJack {
     //     System.out.println(" : total " + houseHand.totalHandValue());
     // }
 
-    // private void houseBet() {
-    //     while (houseHand.totalHandValue() < 17) {
-    //         houseHand.addCard(mainDeck.drawCard());
-    //         houseReveal();
-    //         if (houseHand.getBust()) {
-    //             System.out.println(" House Bust");
-    //         }
-    //     }
-    // }
+    private void houseBet() {
+        while (houseHand.value() < 17) {
+            pause(.75);
+            houseHand.addCard(mainDeck.drawCard());
+            househandObserver.houseHandChange();
+            if (houseHand.getBust()) {
+                System.out.println(" House Bust");
+            }
+
+            // did same thing just in case it causes less bugs
+            System.out.println(houseHand.value());
+        }
+    }
 
     // private String winner() {
     //     if (houseHand.getBust() && playerHand.getBust()) {
@@ -113,16 +115,20 @@ public class BlackJack {
     private void getPlayerInput() {
         GUI.setHitAndStandButton(true);
         while (playerHand.value() < 21 && !stand && !playerHand.getBust()) {
+
             // I don't know why but without this after a couple of hands it
             // automatically skips userInput part and just shows house hand
+            // maybe it helps refresh playerHand.value()?
             System.out.println(playerHand.value());
         }
         stand = false;
         GUI.setHitAndStandButton(false);
     }
-    private void pause() {
+
+    private <T extends Number> void pause(T value) {
+        int millisecond = (int)(value.doubleValue() * 1000);
         try {
-            Thread.sleep(3000);
+            Thread.sleep(millisecond);
         } catch (InterruptedException e){
             Thread.currentThread().interrupt();
         } 
