@@ -49,6 +49,7 @@ public class DeckOfCards {
         return topCard;
     }
 
+    // remove maybe?
     public ArrayList<Card> getDeck() {
         return deck;
     }
@@ -57,6 +58,7 @@ public class DeckOfCards {
         return deck.size() == 0;
     }
 
+    // remove maybe?
     public Card peekCard() {
         return deck.get(0);
     }

@@ -14,6 +14,7 @@ public class BlackJack {
     private HandObserver handObserver;
     private HouseHandObserver househandObserver;
     private GameWindow GUI;
+    private int betAmount;
 
     // set later
     public BlackJack() {
@@ -27,9 +28,13 @@ public class BlackJack {
         houseHand = new Hand();
         mainDeck = new DeckOfCards();
         bank = 300;
+        betAmount = 30;
     }
 
     public void play() {
+        clearHand();
+        bank -= betAmount;
+        GUI.setBank(bank);
         deal();
         getPlayerInput();
         // clearHand();
@@ -38,9 +43,12 @@ public class BlackJack {
     public void houseTurn() {
         houseReveal();
         pause(.75);
+        System.out.println("paused");
         // houseBet includes pauses
         houseBet();
         revealWinner();
+        pause(1.5);
+        GUI.setBetAndSpinner(true);
     }
 
     private void deal() {
@@ -59,7 +67,7 @@ public class BlackJack {
         if (playerHand.value() < 21) {
             playerHand.addCard(mainDeck.drawCard());
             handObserver.handChange();
-            pause(.75);
+            pause(.5);
             if (playerHand.value() >= 21) {
                 stand();
             }
@@ -75,34 +83,41 @@ public class BlackJack {
     private void houseReveal() {
         houseHand.getCard(0).setFaceUp(true);
         househandObserver.houseHandChange();
+        pause(1);
     }
 
     private void houseBet() {
         while (houseHand.value() < 17) {
             pause(.5);
             houseHand.addCard(mainDeck.drawCard());
-            househandObserver.houseHandChange();
             if (houseHand.getBust()) {
                 System.out.println(" House Bust");
             }
             System.out.println(houseHand.value());
         }
+        househandObserver.houseHandChange();
     }
 
     private void revealWinner() {
+        // bet has already been subtracted from bank
         if (houseHand.getBust() && playerHand.getBust()) {
             System.out.println("Both lost");
         } else if (houseHand.value() == playerHand.value()) {
+            bank += (betAmount);
             System.out.println("Tie");
         } else if (houseHand.getBust() && !playerHand.getBust()) {
+            bank += (betAmount * 2);
             System.out.println("You win");
         } else if (!houseHand.getBust() && playerHand.getBust()) {
             System.out.println("House wins");
         } else if (houseHand.value() > playerHand.value()) {
             System.out.println("House wins");
         } else {
+            bank += (betAmount * 2);
             System.out.println("You win");
         }
+
+        GUI.setBank(bank);
         // add bet button next
         // pause(1.5);
         // clearHand();
@@ -148,5 +163,17 @@ public class BlackJack {
 
     public void addGUI(GameWindow GUI) {
         this.GUI = GUI;
+    }
+
+    public void setBetAmount(int value) {
+        if (betAmount < bank) {
+            betAmount = value;
+        } else {
+            betAmount = bank;
+        }
+    }
+
+    public int getBetAmount() {
+        return betAmount;
     }
 }

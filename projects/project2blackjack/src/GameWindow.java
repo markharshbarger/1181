@@ -12,17 +12,19 @@ public class GameWindow extends JFrame {
     private final Color tableColor = new Color(50, 168, 82);
     private final Font scoreFont = new Font("Arial", Font.BOLD, 37);
     private final Font ButtonFont = new Font("Serif", Font.BOLD, 27);
+    private final Font infoFont = new Font("Sherif", Font.BOLD, 18);
     private JLabel bankLabel;
     private JLabel playerScoreLabel;
     private JLabel houseScoreLabel;
     private JPanel housePanel;
     private JPanel playerPanel;
     private JPanel centerPanel;
-    JButton hitButton;
-    JButton standButton;
+    private JSpinner spinner;
+    private JButton betButton;
+    private JButton hitButton;
+    private JButton standButton;
 
     public GameWindow(BlackJack game) {
-        bankLabel = new JLabel();
         this.game = game;
         this.setLayout(new BorderLayout());
         this.createComponents();
@@ -34,20 +36,17 @@ public class GameWindow extends JFrame {
     }
 
     private void createComponents() {
+        // smooth this out
         JPanel buttonPanel = new JPanel();
-        hitButton = new JButton("Hit");
-        standButton = new JButton("Stand");
-        hitButton.setFont(ButtonFont);
-        standButton.setFont(ButtonFont);
-        hitButton.addActionListener(e -> hitButton());
-        standButton.addActionListener(e -> standButton());
-        setHitAndStandButton(false);
-        buttonPanel.add(hitButton);
-        buttonPanel.add(standButton);
+        createBetComponent(buttonPanel);
+        createHitAndStandComponent(buttonPanel);
         this.add(buttonPanel, BorderLayout.SOUTH);
 
         JPanel infoPanel = new JPanel();
         JLabel bankStringLabel = new JLabel("Bank:");
+        bankStringLabel.setFont(infoFont);
+        bankLabel = new JLabel(String.valueOf(game.getBank()));
+        bankLabel.setFont(infoFont);
         infoPanel.add(bankStringLabel);
         infoPanel.add(bankLabel);
         this.add(infoPanel, BorderLayout.NORTH);
@@ -67,8 +66,30 @@ public class GameWindow extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
+    private void createBetComponent(JPanel buttonPanel) {
+        spinner = new JSpinner(new SpinnerNumberModel(game.getBetAmount(), 10, game.getBank(), 10));
+        spinner.setFont(ButtonFont);
+        betButton = new JButton("Bet");
+        betButton.setFont(ButtonFont);
+        betButton.addActionListener(e -> betButton());
+        buttonPanel.add(spinner);
+        buttonPanel.add(betButton);
+    }
+
+    private void createHitAndStandComponent(JPanel buttonPanel) {
+        hitButton = new JButton("Hit");
+        standButton = new JButton("Stand");
+        hitButton.setFont(ButtonFont);
+        standButton.setFont(ButtonFont);
+        hitButton.addActionListener(e -> hitButton());
+        standButton.addActionListener(e -> standButton());
+        setHitAndStandButton(false);
+        buttonPanel.add(hitButton);
+        buttonPanel.add(standButton);
+    }
+
     private void hitButton() {
-        System.out.println("Betting");
+        System.out.println("Hitting");
         game.hit();
     }
 
@@ -80,6 +101,22 @@ public class GameWindow extends JFrame {
     private void standButton() {
         System.out.println("Standing");
         game.stand();
+    }
+
+    private void betButton() {
+        setBetAndSpinner(false);
+        game.setBetAmount((int)spinner.getValue());
+        this.bankLabel.setText(String.valueOf(game.getBank() - game.getBetAmount()));
+        game.play();
+    }
+
+    public void setBank(int value) {
+        bankLabel.setText(String.valueOf(value));
+    }
+
+    public void setBetAndSpinner(boolean value) {
+        spinner.setEnabled(value);
+        betButton.setEnabled(value);
     }
 
     public void refreshHouseHand(Hand hand) {
