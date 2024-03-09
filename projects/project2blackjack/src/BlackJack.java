@@ -1,3 +1,8 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
 interface HandObserver {
     void handChange();
 }
@@ -15,6 +20,7 @@ public class BlackJack {
     private HouseHandObserver househandObserver;
     private GameWindow GUI;
     private int betAmount;
+    private Timer houseTimer;
 
     // set later
     public BlackJack() {
@@ -29,6 +35,7 @@ public class BlackJack {
         mainDeck = new DeckOfCards();
         bank = 300;
         betAmount = 30;
+
     }
 
     public void play() {
@@ -41,13 +48,12 @@ public class BlackJack {
     }
 
     public void houseTurn() {
-        houseReveal();
-        pause(.75);
+
+        pause(2, this::houseReveal);
         System.out.println("paused");
         // houseBet includes pauses
         houseBet();
         revealWinner();
-        pause(1.5);
         GUI.setBetAndSpinner(true);
     }
 
@@ -67,7 +73,8 @@ public class BlackJack {
         if (playerHand.value() < 21) {
             playerHand.addCard(mainDeck.drawCard());
             handObserver.handChange();
-            pause(.5);
+            // pause(.5);
+            // checks if hand is 21 or over after adding card
             if (playerHand.value() >= 21) {
                 stand();
             }
@@ -77,18 +84,19 @@ public class BlackJack {
 
     public void stand() {
         GUI.setHitAndStandButton(false);
-        houseTurn();
+
+        // find source
+        pause(5, this::houseTurn);
     }
 
     private void houseReveal() {
         houseHand.getCard(0).setFaceUp(true);
         househandObserver.houseHandChange();
-        pause(1);
     }
 
     private void houseBet() {
         while (houseHand.value() < 17) {
-            pause(.5);
+            // pause(2);
             houseHand.addCard(mainDeck.drawCard());
             if (houseHand.getBust()) {
                 System.out.println(" House Bust");
@@ -116,8 +124,10 @@ public class BlackJack {
             bank += (betAmount * 2);
             System.out.println("You win");
         }
+        System.out.println("hello world");
 
         GUI.setBank(bank);
+        return;
         // add bet button next
         // pause(1.5);
         // clearHand();
@@ -140,13 +150,16 @@ public class BlackJack {
         GUI.setHitAndStandButton(true);
     }
 
-    private <T extends Number> void pause(T value) {
-        int millisecond = (int)(value.doubleValue() * 1000);
-        try {
-            Thread.sleep(millisecond);
-        } catch (InterruptedException e){
-            Thread.currentThread().interrupt();
-        } 
+    private void pause(int seconds, Runnable method) {
+        // Timer houseTimer;
+        int millisecond = (int)(seconds * 1000);
+        houseTimer = new Timer(millisecond, new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                houseTimer.stop();
+                method.run();
+            }
+        });
+        houseTimer.start();
     }
 
     public Hand getPlayerHand() {

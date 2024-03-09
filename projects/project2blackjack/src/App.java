@@ -2,6 +2,9 @@
 // used 'https://opengameart.org/content/playing-cards-1' for playing card images, but had to crop each card into its own file
 // "https://stackoverflow.com/questions/60891289/update-gui-in-response-to-model-changes" used this to understand how to seperate game logic
 // and GUI
+
+import javax.swing.SwingUtilities;
+
 public class App implements HandObserver, HouseHandObserver {
     // Name: Mark Harshbarger
     // WSU email: harshbarger.26@wright.ed
@@ -25,6 +28,11 @@ public class App implements HandObserver, HouseHandObserver {
     }
 
     public static void main(String[] args) throws Exception {
+        // new RuleWindow();
+        SwingUtilities.invokeLater(() -> new App());
+    }
+
+    public static void playGame() {
         new App();
     }
 }
