@@ -46,8 +46,7 @@ public class RuleWindow {
                         "3. The person with the highest score, without going over 21 wins.\n" +
                         "4. Numbered cards values follow their number.\n" + 
                         "5. Face cards are 10, and Ace is either 11 or 1\n" +
-                        "6. The program automatically chooses Ace value based on which one helps you the best." +
-                        "7. The House always wins";
+                        "6. The program automatically chooses Ace value based on which one helps you the best.";
         ruleTextArea.setText(rules);
 
         Font ruleFont = new Font("Rule Font", Font.ROMAN_BASELINE, 16);

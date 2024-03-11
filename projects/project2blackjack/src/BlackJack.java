@@ -8,6 +8,10 @@ interface HouseHandObserver {
     void houseHandChange();
 }
 
+interface EndOfRoundObserver {
+    void endOfRound();
+}
+
 public class BlackJack {
     private Hand playerHand;
     private Hand houseHand;
@@ -15,13 +19,16 @@ public class BlackJack {
     private int bank;
     private HandObserver handObserver;
     private HouseHandObserver househandObserver;
+    private EndOfRoundObserver endOfRoundObserver;
     private GameWindow GUI;
     private int betAmount;
+    private String roundStat;
 
-    public BlackJack(HandObserver handObserver, HouseHandObserver houseHandObserver) {
+    public BlackJack(HandObserver handObserver, HouseHandObserver houseHandObserver, EndOfRoundObserver endOfRoundObserver) {
         playerHand = new Hand();
         this.handObserver = handObserver;
         this.househandObserver = houseHandObserver;
+        this.endOfRoundObserver = endOfRoundObserver;
         houseHand = new Hand();
         mainDeck = new DeckOfCards();
         bank = 300;
@@ -121,22 +128,29 @@ public class BlackJack {
     private void revealWinner() {
         // bet has already been subtracted from bank
         if (houseHand.getBust() && playerHand.getBust()) {
+            roundStat = "Both Lose";
             System.out.println("Both lost");
         } else if (houseHand.value() == playerHand.value()) {
             bank += (betAmount);
+            roundStat = "Tie";
             System.out.println("Tie");
         } else if (houseHand.getBust() && !playerHand.getBust()) {
             bank += (betAmount * 2);
+            roundStat = "You Win";
             System.out.println("You win");
         } else if (!houseHand.getBust() && playerHand.getBust()) {
+            roundStat = "House Wins";
             System.out.println("House wins");
         } else if (houseHand.value() > playerHand.value()) {
+            roundStat = "House Wins";
             System.out.println("House wins");
         } else {
+            roundStat = "You Win ";
             bank += (betAmount * 2);
             System.out.println("You win");
         }
 
+        endOfRoundObserver.endOfRound();
         GUI.setBank(bank);
         GUI.setBetAndSpinner(true);
     }
@@ -191,5 +205,9 @@ public class BlackJack {
         } catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }
+    }
+
+    public String getRoudStat() {
+        return roundStat;
     }
 }

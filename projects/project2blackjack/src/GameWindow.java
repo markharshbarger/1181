@@ -16,9 +16,11 @@ public class GameWindow extends JFrame {
     private JLabel bankLabel;
     private JLabel playerScoreLabel;
     private JLabel houseScoreLabel;
+    private JLabel gameResultLabel;
     private JPanel housePanel;
     private JPanel playerPanel;
     private JPanel centerPanel;
+    private JPanel gameResultPanel;
     private JSpinner spinner;
     private JButton betButton;
     private JButton hitButton;
@@ -36,7 +38,6 @@ public class GameWindow extends JFrame {
     }
 
     private void createComponents() {
-        // smooth this out
         JPanel buttonPanel = new JPanel();
         createBetComponent(buttonPanel);
         createHitAndStandComponent(buttonPanel);
@@ -56,18 +57,25 @@ public class GameWindow extends JFrame {
         houseScoreLabel = new JLabel("0");
         houseScoreLabel.setFont(scoreFont);
 
-        centerPanel = new JPanel(new GridLayout(2,1));
+        gameResultPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        gameResultLabel = new JLabel("");
+        gameResultLabel.setFont(scoreFont);
+        gameResultPanel.add(gameResultLabel);
+
+        centerPanel = new JPanel(new GridLayout(3,1));
         playerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         housePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         playerPanel.setBackground(tableColor);
         housePanel.setBackground(tableColor);
+        gameResultPanel.setBackground(tableColor);
         centerPanel.add(housePanel);
+        centerPanel.add(gameResultPanel);
         centerPanel.add(playerPanel);
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
     private void createBetComponent(JPanel buttonPanel) {
-        spinner = new JSpinner(new SpinnerNumberModel(game.getBetAmount(), 10, game.getBank(), 10));
+        spinner = new JSpinner(new SpinnerNumberModel(game.getBetAmount(), 1 , 999, 10));
         spinner.setFont(ButtonFont);
         betButton = new JButton("Bet");
         betButton.setFont(ButtonFont);
@@ -104,9 +112,17 @@ public class GameWindow extends JFrame {
     }
 
     private void betButton() {
+        if (game.getBank() == 0) {
+            gameResultLabel.setForeground(Color.RED);
+            refreshRoundStat("Game Over, out of funds");
+            return;
+        }
+        refreshRoundStat("");
+        if ((int)spinner.getValue() > game.getBank()) {
+            return;
+        }
         setBetAndSpinner(false);
         game.setBetAmount((int)spinner.getValue());
-        this.bankLabel.setText(String.valueOf(game.getBank() - game.getBetAmount()));
         game.play();
     }
 
@@ -157,6 +173,11 @@ public class GameWindow extends JFrame {
         playerPanel.add(playerScoreLabel);
         updateGraphics();
         System.out.println("refreshing Player");
+    }
+
+    public void refreshRoundStat(String roundStat) {
+        gameResultLabel.setText(roundStat);
+        update(getGraphics());
     }
 
     public void updateGraphics() {

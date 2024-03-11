@@ -1,4 +1,3 @@
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -18,31 +17,24 @@ public class DeckOfCards {
         shuffle();
     }
 
-    // change the secure random
     public void shuffle() {
-        Collections.shuffle(deck, new SecureRandom());
+        Collections.shuffle(deck);
     }
 
     public Card drawCard() {
-        if (!deck.isEmpty()) {
-            return deck.remove(0);
+        if (deck.isEmpty()) {
+            initializeDeck();
         }
-        
         System.out.println("New Deck");
-        initializeDeck();
         return deck.remove(0);
     }
 
     public Card drawCardFaceDown() {
-        if (!deck.isEmpty()) {
-            Card topCard = deck.get(0);
-            topCard.setFaceUp(false);
-            deck.remove(0);
-            return topCard;
+        if (deck.isEmpty()) {
+            initializeDeck();
         }
 
         System.out.println("New Deck");
-        initializeDeck();
         Card topCard = deck.get(0);
         topCard.setFaceUp(false);
         deck.remove(0);
@@ -56,10 +48,5 @@ public class DeckOfCards {
 
     public boolean empty() {
         return deck.size() == 0;
-    }
-
-    // remove maybe?
-    public Card peekCard() {
-        return deck.get(0);
     }
 }

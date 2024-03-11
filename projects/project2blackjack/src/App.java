@@ -5,13 +5,13 @@
 
 import javax.swing.SwingUtilities;
 
-public class App implements HandObserver, HouseHandObserver {
+public class App implements HandObserver, HouseHandObserver, EndOfRoundObserver {
     // Name: Mark Harshbarger
     // WSU email: harshbarger.26@wright.ed
     private final GameWindow gameGUI;
     private BlackJack gameLogic;
     public App() {
-        gameLogic = new BlackJack(this, this);
+        gameLogic = new BlackJack(this, this, this);
         gameGUI = new GameWindow(gameLogic);
         gameLogic.addGUI(gameGUI);
         // gameLogic.play();
@@ -25,6 +25,11 @@ public class App implements HandObserver, HouseHandObserver {
     @Override
     public void houseHandChange() {
         SwingUtilities.invokeLater(() ->  gameGUI.refreshHouseHand(gameLogic.getHouseHand()));
+    }
+
+    @Override
+    public void endOfRound() {
+        SwingUtilities.invokeLater(() -> gameGUI.refreshRoundStat(gameLogic.getRoudStat()));
     }
 
     public static void main(String[] args) throws Exception {
