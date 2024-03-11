@@ -21,12 +21,13 @@ public class RuleWindow {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 350);
         frame.setTitle("Black Jack Rules");
+        frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(null); 
         frame.setVisible(true);
     }
 
     private void playGame() {
-        App.playGame();
+        SwingUtilities.invokeLater(() -> new App());
         frame.dispose();
     }
 

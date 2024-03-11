@@ -1,5 +1,4 @@
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 interface HandObserver {
     void handChange();
@@ -19,11 +18,6 @@ public class BlackJack {
     private GameWindow GUI;
     private int betAmount;
 
-    // set later
-    public BlackJack() {
-
-    }
-
     public BlackJack(HandObserver handObserver, HouseHandObserver houseHandObserver) {
         playerHand = new Hand();
         this.handObserver = handObserver;
@@ -32,7 +26,6 @@ public class BlackJack {
         mainDeck = new DeckOfCards();
         bank = 300;
         betAmount = 30;
-
     }
 
     public void play() {
@@ -41,42 +34,29 @@ public class BlackJack {
         GUI.setBank(bank);
         deal();
         getPlayerInput();
-        // clearHand();
     }
 
-    //'https://www.codecademy.com/resources/docs/java/threading'
     public void houseTurn() {
-        System.out.println("went to house turn");
-        class NewThread extends Thread {
-            public void run() {
-                houseReveal();
-                System.out.println("paused");
-                System.out.println("House turn");
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e){
-                    Thread.currentThread().interrupt();
-                }
-                // houseBet includes pauses
-                houseBet();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e){
-                    Thread.currentThread().interrupt();
-                }
-                revealWinner();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e){
-                    Thread.currentThread().interrupt();
-                }
-                // pause(2, this::revealWinner);
-                GUI.setBetAndSpinner(true);
+        System.out.println("house turn");
+        Thread houseTurnThread = new Thread(() -> {
+            houseReveal();
+            pause(.65);
+            // keeps looping until the house doesn't need to hit
+            while (houseHit()) {
+                pause(.5);
             }
-        }
-        NewThread newThread = new NewThread();
-        newThread.start();
+            revealWinner();
+        });
+        houseTurnThread.start();
     }
+
+    //'https://www.codecademy.com/resources/docs/java/threading' had to create a new thread to have the game pause, without a new thread it would cause the thread
+    // with Swing to stop too which caused glitches
+    // class newThread extends Thread {
+    //     public void run(Runnable run) {
+    //         run();
+    //     }
+    // }
 
     private void deal() {
         houseHand.addCard(mainDeck.drawCardFaceDown());
@@ -94,21 +74,20 @@ public class BlackJack {
         if (playerHand.value() < 21) {
             playerHand.addCard(mainDeck.drawCard());
             handObserver.handChange();
-            // pause(.5);
+
             // checks if hand is 21 or over after adding card
             if (playerHand.value() >= 21) {
                 stand();
             }
-            return;
         }
     }
 
     public void stand() {
         GUI.setHitAndStandButton(false);
 
-        // find source
-        // pause(5, this::houseTurn);
-        SwingUtilities.invokeLater(this::houseTurn);
+        // 'https://www.geeksforgeeks.org/double-colon-operator-in-java/'
+        // SwingUtilities.invokeLater(this::houseTurn);
+        SwingUtilities.invokeLater(() -> houseTurn());
     }
 
     private void houseReveal() {
@@ -116,16 +95,27 @@ public class BlackJack {
         househandObserver.houseHandChange();
     }
 
-    private void houseBet() {
-        while (houseHand.value() < 17) {
-            // pause(2);
+    private boolean houseHit() {
+        // while (houseHand.value() < 17) {
+        //     houseHand.addCard(mainDeck.drawCard());
+        //     if (houseHand.getBust()) {
+        //         System.out.println(" House Bust");
+        //     }
+        //     System.out.println(houseHand.value());
+        // }
+
+        // househandObserver.houseHandChange();
+        if (houseHand.value() < 17) {
             houseHand.addCard(mainDeck.drawCard());
+            househandObserver.houseHandChange();
+            
+            //print to terminal
             if (houseHand.getBust()) {
-                System.out.println(" House Bust");
+                System.out.println("House Bust");
             }
-            System.out.println(houseHand.value());
+            return true;
         }
-        househandObserver.houseHandChange();
+        return false;
     }
 
     private void revealWinner() {
@@ -146,15 +136,9 @@ public class BlackJack {
             bank += (betAmount * 2);
             System.out.println("You win");
         }
-        System.out.println("hello world");
 
         GUI.setBank(bank);
-        return;
-        // add bet button next
-        // pause(1.5);
-        // clearHand();
-        // pause(0.2);
-        // play();
+        GUI.setBetAndSpinner(true);
     }
 
     private void clearHand() {
@@ -171,20 +155,6 @@ public class BlackJack {
         }
         GUI.setHitAndStandButton(true);
     }
-
-    // private void pause(int seconds, Runnable method) {
-    //     // Timer houseTimer;
-    //     // int millisecond = (int)(seconds * 1000);
-    //     // houseTimer = new Timer(millisecond, new ActionListener() {
-    //     //     public void actionPerformed(ActionEvent evt) {
-    //     //         houseTimer.stop();
-    //     //         method.run();
-    //     //     }
-    //     // });
-    //     // houseTimer.start();
-    //     Thread newThread = new Thread(method);
-    //     newThread.start();
-    // }
 
     public Hand getPlayerHand() {
         return playerHand;
@@ -214,13 +184,12 @@ public class BlackJack {
         return betAmount;
     }
 
-    // private <T extends Number> void pause(T value) {
-    //     int millisecond = (int)(value.doubleValue() * 1000);
-        // try {
-        //     Thread.sleep(3000);
-        //     Thread.sleep(millisecond);
-        // } catch (InterruptedException e){
-        //     Thread.currentThread().interrupt();
-        // }
-    // }
+    private <T extends Number> void pause(T value) {
+        int millisecond = (int)(value.doubleValue() * 1000);
+        try {
+            Thread.sleep(millisecond);
+        } catch (InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+    }
 }

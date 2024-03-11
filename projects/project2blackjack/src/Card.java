@@ -45,6 +45,5 @@ public class Card {
         } else {
             fileLocation = getFaceUpFileLocation();
         }
-
     }
 }

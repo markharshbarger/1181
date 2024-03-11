@@ -19,17 +19,17 @@ public class App implements HandObserver, HouseHandObserver {
 
     @Override
     public void handChange() {
-        gameGUI.refreshPlayerHand(gameLogic.getPlayerHand());
+        SwingUtilities.invokeLater(() -> gameGUI.refreshPlayerHand(gameLogic.getPlayerHand()));
     }
 
     @Override
     public void houseHandChange() {
-        gameGUI.refreshHouseHand(gameLogic.getHouseHand());
+        SwingUtilities.invokeLater(() ->  gameGUI.refreshHouseHand(gameLogic.getHouseHand()));
     }
 
     public static void main(String[] args) throws Exception {
-        // new RuleWindow();
-        SwingUtilities.invokeLater(() -> new App());
+        // when play button is clicked it launches the gamewindow
+        SwingUtilities.invokeLater(() -> new RuleWindow());
     }
 
     public static void playGame() {
