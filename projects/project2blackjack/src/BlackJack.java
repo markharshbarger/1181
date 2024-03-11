@@ -1,5 +1,3 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -20,7 +18,6 @@ public class BlackJack {
     private HouseHandObserver househandObserver;
     private GameWindow GUI;
     private int betAmount;
-    private Timer houseTimer;
 
     // set later
     public BlackJack() {
@@ -47,14 +44,38 @@ public class BlackJack {
         // clearHand();
     }
 
+    //'https://www.codecademy.com/resources/docs/java/threading'
     public void houseTurn() {
-
-        pause(2, this::houseReveal);
-        System.out.println("paused");
-        // houseBet includes pauses
-        houseBet();
-        revealWinner();
-        GUI.setBetAndSpinner(true);
+        System.out.println("went to house turn");
+        class NewThread extends Thread {
+            public void run() {
+                houseReveal();
+                System.out.println("paused");
+                System.out.println("House turn");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                }
+                // houseBet includes pauses
+                houseBet();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                }
+                revealWinner();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                }
+                // pause(2, this::revealWinner);
+                GUI.setBetAndSpinner(true);
+            }
+        }
+        NewThread newThread = new NewThread();
+        newThread.start();
     }
 
     private void deal() {
@@ -86,7 +107,8 @@ public class BlackJack {
         GUI.setHitAndStandButton(false);
 
         // find source
-        pause(5, this::houseTurn);
+        // pause(5, this::houseTurn);
+        SwingUtilities.invokeLater(this::houseTurn);
     }
 
     private void houseReveal() {
@@ -150,17 +172,19 @@ public class BlackJack {
         GUI.setHitAndStandButton(true);
     }
 
-    private void pause(int seconds, Runnable method) {
-        // Timer houseTimer;
-        int millisecond = (int)(seconds * 1000);
-        houseTimer = new Timer(millisecond, new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                houseTimer.stop();
-                method.run();
-            }
-        });
-        houseTimer.start();
-    }
+    // private void pause(int seconds, Runnable method) {
+    //     // Timer houseTimer;
+    //     // int millisecond = (int)(seconds * 1000);
+    //     // houseTimer = new Timer(millisecond, new ActionListener() {
+    //     //     public void actionPerformed(ActionEvent evt) {
+    //     //         houseTimer.stop();
+    //     //         method.run();
+    //     //     }
+    //     // });
+    //     // houseTimer.start();
+    //     Thread newThread = new Thread(method);
+    //     newThread.start();
+    // }
 
     public Hand getPlayerHand() {
         return playerHand;
@@ -189,4 +213,14 @@ public class BlackJack {
     public int getBetAmount() {
         return betAmount;
     }
+
+    // private <T extends Number> void pause(T value) {
+    //     int millisecond = (int)(value.doubleValue() * 1000);
+        // try {
+        //     Thread.sleep(3000);
+        //     Thread.sleep(millisecond);
+        // } catch (InterruptedException e){
+        //     Thread.currentThread().interrupt();
+        // }
+    // }
 }
