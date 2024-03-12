@@ -43,39 +43,18 @@ public class BlackJack {
         getPlayerInput();
     }
 
-    public void houseTurn() {
-        System.out.println("house turn");
-        Thread houseTurnThread = new Thread(() -> {
-            houseReveal();
-            pause(.65);
-            // keeps looping until the house doesn't need to hit
-            while (houseHit()) {
-                pause(.5);
-            }
-            revealWinner();
-        });
-        houseTurnThread.start();
+    private void getPlayerInput() {
+        if (playerHand.value() >= 21) {
+            stand();
+            return;
+        }
+        GUI.setHitAndStandButton(true);
     }
 
-    //'https://www.codecademy.com/resources/docs/java/threading' had to create a new thread to have the game pause, without a new thread it would cause the thread
-    // with Swing to stop too which caused glitches
-    // class newThread extends Thread {
-    //     public void run(Runnable run) {
-    //         run();
-    //     }
-    // }
-
-    private void deal() {
-        houseHand.addCard(mainDeck.drawCardFaceDown());
-        
-        playerHand.addCard(mainDeck.drawCard());
-        houseHand.addCard(mainDeck.drawCard());
-        playerHand.addCard(mainDeck.drawCard());
-
-        househandObserver.houseHandChange();
-        handObserver.handChange();
+    public void stand() {
+        GUI.setHitAndStandButton(false);
+        SwingUtilities.invokeLater(() -> houseTurn());
     }
-
 
     public void hit() {
         if (playerHand.value() < 21) {
@@ -89,12 +68,34 @@ public class BlackJack {
         }
     }
 
-    public void stand() {
-        GUI.setHitAndStandButton(false);
+    //'https://www.codecademy.com/resources/docs/java/threading' had to create a new thread to have the game pause, without a new thread it would cause the thread
+    // with Swing to stop too which caused glitches
+    public void houseTurn() {
+        System.out.println("house turn");
+        Thread houseTurnThread = new Thread(() -> {
+            pause(.41);
+            houseReveal();
+            pause(.65);
 
-        // 'https://www.geeksforgeeks.org/double-colon-operator-in-java/'
-        // SwingUtilities.invokeLater(this::houseTurn);
-        SwingUtilities.invokeLater(() -> houseTurn());
+            // keeps looping until the house doesn't need to hit
+            while (houseHit()) {
+                pause(.59);
+            }
+
+            revealWinner();
+        });
+        houseTurnThread.start();
+    }
+
+    private void deal() {
+        houseHand.addCard(mainDeck.drawCardFaceDown());
+        
+        playerHand.addCard(mainDeck.drawCard());
+        houseHand.addCard(mainDeck.drawCard());
+        playerHand.addCard(mainDeck.drawCard());
+
+        househandObserver.houseHandChange();
+        handObserver.handChange();
     }
 
     private void houseReveal() {
@@ -103,15 +104,6 @@ public class BlackJack {
     }
 
     private boolean houseHit() {
-        // while (houseHand.value() < 17) {
-        //     houseHand.addCard(mainDeck.drawCard());
-        //     if (houseHand.getBust()) {
-        //         System.out.println(" House Bust");
-        //     }
-        //     System.out.println(houseHand.value());
-        // }
-
-        // househandObserver.houseHandChange();
         if (houseHand.value() < 17) {
             houseHand.addCard(mainDeck.drawCard());
             househandObserver.houseHandChange();
@@ -160,14 +152,6 @@ public class BlackJack {
         houseHand.clearHand();
         handObserver.handChange();
         househandObserver.houseHandChange();
-    }
-
-    private void getPlayerInput() {
-        if (playerHand.value() >= 21) {
-            stand();
-            return;
-        }
-        GUI.setHitAndStandButton(true);
     }
 
     public Hand getPlayerHand() {

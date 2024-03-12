@@ -49,11 +49,12 @@ public class RuleWindow {
                         "6. The program automatically chooses Ace value based on which one helps you the best.";
         ruleTextArea.setText(rules);
 
-        Font ruleFont = new Font("Rule Font", Font.ROMAN_BASELINE, 16);
+        Font ruleFont = new Font("Rule Font", Font.ROMAN_BASELINE, 20);
         ruleTextArea.setFont(ruleFont);
 
         rulePanel.add(ruleTextArea);
         frame.add(rulePanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(rulePanel);
     }
 
 }

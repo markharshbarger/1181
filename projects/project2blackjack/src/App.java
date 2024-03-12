@@ -33,7 +33,7 @@ public class App implements HandObserver, HouseHandObserver, EndOfRoundObserver 
     }
 
     public static void main(String[] args) throws Exception {
-        // when play button is clicked it launches the gamewindow
+        // when play button in rulewindow is clicked it launches the gamewindow
         SwingUtilities.invokeLater(() -> new RuleWindow());
     }
 
