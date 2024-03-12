@@ -5,6 +5,13 @@ public class Card {
     private String fileLocation;
     private boolean faceUp;
 
+    /**
+     * Creates a Card object based of rank and suit. Also sets file location for card image to the top or face,
+     * and not the bottom
+     * 
+     * @param rank enum that has the 13 different playing card names along with their values
+     * @param suit enum that has the 4 playing card suits
+     */
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
@@ -12,12 +19,18 @@ public class Card {
         faceUp = true;
     }
 
+    /**
+     * Gets the face up file location for the playing card
+     * 
+     * @return 
+     */
     private String getFaceUpFileLocation() {
         return this.imageFolderLocation + this.rank + "_" + this.suit + ".png";
     }
 
     @Override
     public String toString() {
+        // need to + "" to not need a typecast
         return this.rank + "";
     }
 
@@ -33,7 +46,7 @@ public class Card {
         return this.fileLocation;
     }
 
-    public boolean getfaceUp() {
+    public boolean isfaceUp() {
         return faceUp;
     }
 

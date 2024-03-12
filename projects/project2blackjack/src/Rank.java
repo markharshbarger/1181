@@ -1,4 +1,7 @@
-// 'https://www.baeldung.com/java-enum-values'
+// 'https://www.baeldung.com/java-enum-values' used to understand more about enums
+/**
+ * Class represents the rank for playing cards with each enum containing the respective String name and int card value
+ */
 public enum Rank {
 
     TWO("Two", 2), 
@@ -18,15 +21,31 @@ public enum Rank {
     private String name;
     private int faceValue;
     
+    /**
+     * Constructor of Rank class, sets the name and face value of cards
+     * 
+     * @param name String - name of card
+     * @param faceValue int - card value
+     */
     private Rank(String name, int faceValue) {
         this.name = name;
         this.faceValue = faceValue;
     }
 
+    /**
+     * Gets the face value of card
+     * 
+     * @return int - of card's face value
+     */
     public int getFaceValue() {
         return this.faceValue;
     }
 
+    /**
+     * Gets the name of card
+     * 
+     * @return String - of card's name
+     */
     public String getName() {
         return this.name;
     }
