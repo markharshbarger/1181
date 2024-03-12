@@ -194,4 +194,8 @@ public class BlackJack {
     public String getRoudStat() {
         return roundStat;
     }
+
+    public void newGame() {
+        bank = 300;
+    }
 }

@@ -115,6 +115,7 @@ public class GameWindow extends JFrame {
         if (game.getBank() == 0) {
             gameResultLabel.setForeground(Color.RED);
             refreshRoundStat("Game Over, out of funds");
+            newGame();
             return;
         }
         refreshRoundStat("");
@@ -182,5 +183,15 @@ public class GameWindow extends JFrame {
 
     public void updateGraphics() {
         SwingUtilities.updateComponentTreeUI(this);
+    }
+
+    public void newGame() {
+        int userInput = JOptionPane.showConfirmDialog(this, "Do you want to play again?", "Play Again", JOptionPane.YES_NO_OPTION);
+        if (userInput == JOptionPane.YES_OPTION) {
+            game.newGame();
+            updateGraphics();
+        } else if (userInput == JOptionPane.NO_OPTION) {
+            System.exit(0);
+        }
     }
 }
