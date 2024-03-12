@@ -12,33 +12,48 @@ interface EndOfRoundObserver {
     void endOfRound();
 }
 
+interface BankObserver {
+    void bankChange();
+}
+
+interface HighScoreObserver {
+    void newHighScore();
+}
+
 public class BlackJack {
     private Hand playerHand;
     private Hand houseHand;
     private DeckOfCards mainDeck;
     private int bank;
+    private int highScore;
     private HandObserver handObserver;
     private HouseHandObserver househandObserver;
     private EndOfRoundObserver endOfRoundObserver;
+    private BankObserver bankObserver;
+    private HighScoreObserver highScoreObserver;
     private GameWindow GUI;
     private int betAmount;
     private String roundStat;
 
-    public BlackJack(HandObserver handObserver, HouseHandObserver houseHandObserver, EndOfRoundObserver endOfRoundObserver) {
+    public BlackJack(HandObserver handObserver, HouseHandObserver houseHandObserver, EndOfRoundObserver endOfRoundObserver,
+                        BankObserver bankObserver, HighScoreObserver highScoreObserver) {
         playerHand = new Hand();
         this.handObserver = handObserver;
         this.househandObserver = houseHandObserver;
         this.endOfRoundObserver = endOfRoundObserver;
+        this.bankObserver = bankObserver;
+        this.highScoreObserver = highScoreObserver;
         houseHand = new Hand();
         mainDeck = new DeckOfCards();
         bank = 300;
         betAmount = 30;
+        highScore = bank;
     }
 
     public void play() {
         clearHand();
         bank -= betAmount;
-        GUI.setBank(bank);
+        bankObserver.bankChange();
         deal();
         getPlayerInput();
     }
@@ -141,9 +156,12 @@ public class BlackJack {
             bank += (betAmount * 2);
             System.out.println("You win");
         }
-
+        if (bank > highScore) {
+            highScore = bank;
+            highScoreObserver.newHighScore();
+        }
         endOfRoundObserver.endOfRound();
-        GUI.setBank(bank);
+        bankObserver.bankChange();
         GUI.setBetAndSpinner(true);
     }
 
@@ -197,5 +215,10 @@ public class BlackJack {
 
     public void newGame() {
         bank = 300;
+        bankObserver.bankChange();
+    }
+
+    public int getHighScore() {
+        return highScore;
     }
 }

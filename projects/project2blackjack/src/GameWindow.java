@@ -14,6 +14,7 @@ public class GameWindow extends JFrame {
     private final Font ButtonFont = new Font("Serif", Font.BOLD, 27);
     private final Font infoFont = new Font("Sherif", Font.BOLD, 18);
     private JLabel bankLabel;
+    private JLabel highScorLabel;
     private JLabel playerScoreLabel;
     private JLabel houseScoreLabel;
     private JLabel gameResultLabel;
@@ -45,9 +46,16 @@ public class GameWindow extends JFrame {
 
         JPanel infoPanel = new JPanel();
         JLabel bankStringLabel = new JLabel("Bank:");
+        JLabel highScoreStringLabel = new JLabel("High Score:");
+        highScoreStringLabel.setFont(infoFont);
         bankStringLabel.setFont(infoFont);
         bankLabel = new JLabel(String.valueOf(game.getBank()));
+        highScorLabel = new JLabel(String.valueOf(game.getHighScore()));
+        highScorLabel.setFont(infoFont);
         bankLabel.setFont(infoFont);
+        infoPanel.add(highScoreStringLabel);
+        infoPanel.add(highScorLabel);
+        infoPanel.add(new JLabel("   "));
         infoPanel.add(bankStringLabel);
         infoPanel.add(bankLabel);
         this.add(infoPanel, BorderLayout.NORTH);
@@ -119,10 +127,15 @@ public class GameWindow extends JFrame {
             return;
         }
         refreshRoundStat("");
+        setBetAndSpinner(false);
+
+        // if user bets over the amount in bank, have them bet the amount in the bank
         if ((int)spinner.getValue() > game.getBank()) {
+            spinner.setValue(game.getBank());
+            game.setBetAmount((int)game.getBank());
+            game.play();
             return;
         }
-        setBetAndSpinner(false);
         game.setBetAmount((int)spinner.getValue());
         game.play();
     }
@@ -178,20 +191,24 @@ public class GameWindow extends JFrame {
 
     public void refreshRoundStat(String roundStat) {
         gameResultLabel.setText(roundStat);
-        update(getGraphics());
+        // update(getGraphics());
+        updateGraphics();
     }
 
-    public void updateGraphics() {
+    private void updateGraphics() {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    public void newGame() {
+    private void newGame() {
         int userInput = JOptionPane.showConfirmDialog(this, "Do you want to play again?", "Play Again", JOptionPane.YES_NO_OPTION);
         if (userInput == JOptionPane.YES_OPTION) {
             game.newGame();
-            updateGraphics();
         } else if (userInput == JOptionPane.NO_OPTION) {
             System.exit(0);
         }
+    }
+
+    public void setHighScore(int value) {
+        highScorLabel.setText(Integer.toString(value));
     }
 }
