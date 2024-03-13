@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * JPanel that displays the rules for the game of Black Jack includes an option to start the game or an option to close
+ * the application
+ */
 public class RuleWindow {
     JFrame frame = new JFrame();
     JButton playButton = new JButton("Play");
@@ -8,6 +12,10 @@ public class RuleWindow {
     JPanel rulePanel;
     JPanel buttonPanel;
 
+    /**
+     * Constructor for rule window that initilizes all the values needed to display the GUI to the user. Includes
+     * two buttons to play the game or close the application
+     */
     public RuleWindow() {
         frame.setLayout(new BorderLayout());
         buttonPanel = new JPanel();
@@ -26,15 +34,24 @@ public class RuleWindow {
         frame.setVisible(true);
     }
 
+    /**
+     * Invokes the App method which initilizes the Black Jack game with GUI, disposes of Rule Window frame (current frame)
+     */
     private void playGame() {
         SwingUtilities.invokeLater(() -> new App());
         frame.dispose();
     }
 
+    /**
+     * Closes this application
+     */
     private void quitGame() {
         System.exit(0);
     }
 
+    /**
+     * Sets the JTextArea to display the game rules to user
+     */
     private void setRules() {
         rulePanel = new JPanel();
         JTextArea ruleTextArea = new JTextArea();

@@ -6,6 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Class represents the GUI of a game of Black Jack, uses BlackJack.java for the logic part. Window is set to open
+ * in the middle of screen. Game was built for a 1080p monitor, should still work for higher resolution but some elements might
+ * be smaller
+ */
 public class GameWindowGUI extends JFrame {
     // variables
     private BlackJack game;
@@ -27,6 +32,12 @@ public class GameWindowGUI extends JFrame {
     private JButton hitButton;
     private JButton standButton;
 
+    /**
+     * Constructor for GUI that initializes the defualt setttings to have a window appear. Has window appear in the middle of
+     * the screen
+     * 
+     * @param game - the logic for Black Jack game
+     */
     public GameWindowGUI(BlackJack game) {
         this.game = game;
         this.setLayout(new BorderLayout());
@@ -38,12 +49,17 @@ public class GameWindowGUI extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Creates the components for the window, includes all the buttons and info that is going to be displayed
+     */
     private void createComponents() {
+        // create buttons for hit and stand and bet
         JPanel buttonPanel = new JPanel();
         createBetComponent(buttonPanel);
         createHitAndStandComponent(buttonPanel);
         this.add(buttonPanel, BorderLayout.SOUTH);
 
+        // create the labels for displaying bank and high score info
         JPanel infoPanel = new JPanel();
         JLabel bankStringLabel = new JLabel("Bank:");
         JLabel highScoreStringLabel = new JLabel("High Score:");
@@ -60,16 +76,19 @@ public class GameWindowGUI extends JFrame {
         infoPanel.add(bankLabel);
         this.add(infoPanel, BorderLayout.NORTH);
 
+        // create label for displaying player and house's hand values
         playerScoreLabel = new JLabel("0");
         playerScoreLabel.setFont(scoreFont);
         houseScoreLabel = new JLabel("0");
         houseScoreLabel.setFont(scoreFont);
 
+        // create a label for displaying the results of the round
         gameResultPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         gameResultLabel = new JLabel("");
         gameResultLabel.setFont(scoreFont);
         gameResultPanel.add(gameResultLabel);
 
+        // creates the panels for the player and house's hand to displayed, along with their current hand score
         centerPanel = new JPanel(new GridLayout(3,1));
         playerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         housePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -82,6 +101,11 @@ public class GameWindowGUI extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Creates a JSpinner and JButton for the bet component of the game. Adds an action listener to JButton
+     * 
+     * @param buttonPanel - the panel which JSpinner and JButton will be added to
+     */
     private void createBetComponent(JPanel buttonPanel) {
         spinner = new JSpinner(new SpinnerNumberModel(game.getBetAmount(), 1 , 999, 10));
         spinner.setFont(ButtonFont);
@@ -92,6 +116,11 @@ public class GameWindowGUI extends JFrame {
         buttonPanel.add(betButton);
     }
 
+    /**
+     * Creates two JButton's for 'hit' and 'stand'. Adds action listener's to both
+     * 
+     * @param buttonPanel - the panel which both JButton's will be added to
+     */
     private void createHitAndStandComponent(JPanel buttonPanel) {
         hitButton = new JButton("Hit");
         standButton = new JButton("Stand");
@@ -104,21 +133,37 @@ public class GameWindowGUI extends JFrame {
         buttonPanel.add(standButton);
     }
 
+    /**
+     * The action method for the 'hit' button. Calls the game's logic to perform hit action
+     */
     private void hitButton() {
         System.out.println("Hitting");
         game.hit();
     }
 
+    /**
+     * Sets the 'hit' and 'stand' buttons to be shown or not
+     * 
+     * @param value - true to show the buttons and allow input, false otherwise
+     */
     public void setHitAndStandButton(boolean value) {
         hitButton.setEnabled(value);
         standButton.setEnabled(value);
     }
 
+    /**
+     * The action method for the 'stand' button. Uses the game logic to perform a stand action
+     */
     private void standButton() {
         System.out.println("Standing");
         game.stand();
     }
 
+    /**
+     * Sets bet amount in game logic to the value specified by user, if user has 0 funds, will display that the game is over.
+     * Allows user to play again. If the user bets an amount over what is in bank, game uses the max amount in bank for bet.
+     * Disables bet button and plays a round of Black Jack
+     */
     private void betButton() {
         if (game.getBank() == 0) {
             gameResultLabel.setForeground(Color.RED);
@@ -140,15 +185,30 @@ public class GameWindowGUI extends JFrame {
         game.play();
     }
 
+    /**
+     * Sets the bank amount displayed in GUI
+     * 
+     * @param value int - the amount to set bank to display
+     */
     public void setBank(int value) {
         bankLabel.setText(String.valueOf(value));
     }
 
+    /**
+     * Sets the bet button and spinner to value specifiec
+     * 
+     * @param value true to display button and spinner and allow user input, false otherwise
+     */
     public void setBetAndSpinner(boolean value) {
         spinner.setEnabled(value);
         betButton.setEnabled(value);
     }
 
+    /**
+     * Refreshes the hand of the house on the GUI and displays the hand's current value along with the cards
+     * 
+     * @param hand - the house's hand
+     */
     public void refreshHouseHand(Hand hand) {
         BufferedImage cardPicture;
         housePanel.removeAll();
@@ -169,6 +229,11 @@ public class GameWindowGUI extends JFrame {
         System.out.println("refreshing house");
     }
 
+    /**
+     * Refreshes the hand of the player on the GUI and displays the hand's current value along with the cards
+     * 
+     * @param hand - the player's hand
+     */
     public void refreshPlayerHand(Hand hand) {
         BufferedImage cardPicture;
         playerPanel.removeAll();
@@ -189,16 +254,26 @@ public class GameWindowGUI extends JFrame {
         System.out.println("refreshing Player");
     }
 
+    /**
+     * Displays the winner/loser of last round to the GUI
+     * 
+     * @param roundStat String - that contains the winner/loser
+     */
     public void refreshRoundStat(String roundStat) {
         gameResultLabel.setText(roundStat);
-        // update(getGraphics());
         updateGraphics();
     }
 
+    /**
+     * Updates the graphics of the GUI
+     */
     private void updateGraphics() {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
+    /**
+     * Creates a JOptionPane for the user to have the option to play again, yes for a new game, no for the application to exit
+     */
     private void newGame() {
         int userInput = JOptionPane.showConfirmDialog(this, "Do you want to play again?", "Play Again", JOptionPane.YES_NO_OPTION);
         if (userInput == JOptionPane.YES_OPTION) {
@@ -208,6 +283,11 @@ public class GameWindowGUI extends JFrame {
         }
     }
 
+    /**
+     * Sets the high score on the GUI
+     * 
+     * @param value int - the high score
+     */
     public void setHighScore(int value) {
         highScorLabel.setText(Integer.toString(value));
     }

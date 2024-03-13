@@ -60,6 +60,9 @@ public class App implements HandObserver, HouseHandObserver, EndOfRoundObserver,
         SwingUtilities.invokeLater(() -> gameGUI.setBank(gameLogic.getBank()));
     }
 
+    /**
+     * Synchronizes the high score from game logic to the GUI
+     */
     @Override
     public void newHighScore() {
         SwingUtilities.invokeLater(() -> gameGUI.setHighScore(gameLogic.getHighScore()));

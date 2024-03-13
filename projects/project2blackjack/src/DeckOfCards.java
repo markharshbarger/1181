@@ -55,9 +55,9 @@ public class DeckOfCards {
     public Card drawCardFaceDown() {
         if (deck.isEmpty()) {
             initializeDeck();
+            System.out.println("New Deck");
         }
 
-        System.out.println("New Deck");
         Card topCard = deck.get(0);
         topCard.setFaceUp(false);
         deck.remove(0);

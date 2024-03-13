@@ -178,9 +178,9 @@ public class BlackJack {
     }
 
     /**
-     * Draws a card from the deck of card if the house's hand value is under 17. Notifies house hand observer
+     * Draws a card from the deck, if the house's hand value is under 17. Notifies house hand observer
      * 
-     * @return true if hand value is under 17, false otherwise
+     * @return true if hand value before drawing card is under 17, false otherwise
      */
     private boolean houseHit() {
         if (houseHand.value() < 17) {
@@ -318,6 +318,7 @@ public class BlackJack {
 
     /**
      * Get's the result of the last round; who won or lost
+     * 
      * @return
      */
     public String getRoudStat() {
