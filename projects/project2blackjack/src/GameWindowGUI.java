@@ -147,8 +147,10 @@ public class GameWindowGUI extends JFrame {
      * @param value - true to show the buttons and allow input, false otherwise
      */
     public void setHitAndStandButton(boolean value) {
-        hitButton.setEnabled(value);
-        standButton.setEnabled(value);
+        SwingUtilities.invokeLater(() -> {
+            hitButton.setEnabled(value);
+            standButton.setEnabled(value);
+        });
     }
 
     /**
@@ -172,11 +174,11 @@ public class GameWindowGUI extends JFrame {
             return;
         }
         refreshRoundStat("");
-        setBetAndSpinner(false);
+        SwingUtilities.invokeLater(() -> setBetAndSpinner(false));
 
         // if user bets over the amount in bank, have them bet the amount in the bank
         if ((int)spinner.getValue() > game.getBank()) {
-            spinner.setValue(game.getBank());
+            SwingUtilities.invokeLater(() -> spinner.setValue(game.getBank()));
             game.setBetAmount((int)game.getBank());
             game.play();
             return;
@@ -191,7 +193,7 @@ public class GameWindowGUI extends JFrame {
      * @param value int - the amount to set bank to display
      */
     public void setBank(int value) {
-        bankLabel.setText(String.valueOf(value));
+        SwingUtilities.invokeLater(() -> bankLabel.setText(String.valueOf(value)));
     }
 
     /**
@@ -226,9 +228,11 @@ public class GameWindowGUI extends JFrame {
             }
             housePanel.add(picLabel);
         }
-        houseScoreLabel.setText(String.valueOf(hand.value()));
-        housePanel.add(houseScoreLabel);
-        updateGraphics();
+        SwingUtilities.invokeLater(() -> {
+            houseScoreLabel.setText(String.valueOf(hand.value()));
+            housePanel.add(houseScoreLabel);
+            updateGraphics();
+        });
         System.out.println("refreshing house");
     }
 
@@ -251,9 +255,11 @@ public class GameWindowGUI extends JFrame {
             }
             playerPanel.add(picLabel);
         }
-        playerScoreLabel.setText(String.valueOf(hand.value()));
-        playerPanel.add(playerScoreLabel);
-        updateGraphics();
+        SwingUtilities.invokeLater(() -> {
+            playerScoreLabel.setText(String.valueOf(hand.value()));
+            playerPanel.add(playerScoreLabel);
+            updateGraphics();
+        });
         System.out.println("refreshing Player");
     }
 
@@ -263,8 +269,10 @@ public class GameWindowGUI extends JFrame {
      * @param roundStat String - that contains the winner/loser
      */
     public void refreshRoundStat(String roundStat) {
-        gameResultLabel.setText(roundStat);
-        updateGraphics();
+        SwingUtilities.invokeLater(() -> {
+            gameResultLabel.setText(roundStat);
+            updateGraphics();
+        });
     }
 
     /**
@@ -292,6 +300,6 @@ public class GameWindowGUI extends JFrame {
      * @param value int - the high score
      */
     public void setHighScore(int value) {
-        highScorLabel.setText(Integer.toString(value));
+        SwingUtilities.invokeLater(() -> highScorLabel.setText(Integer.toString(value)));
     }
 }
