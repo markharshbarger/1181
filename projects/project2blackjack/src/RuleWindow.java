@@ -19,7 +19,7 @@ public class RuleWindow {
         setRules();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 350);
+        frame.setSize(1050, 450);
         frame.setTitle("Black Jack Rules");
         frame.setAlwaysOnTop(true);
         frame.setLocationRelativeTo(null); 
@@ -46,9 +46,10 @@ public class RuleWindow {
                         "3. Face cards are 10, and Ace is either 11 or 1\n" +
                         "4. The program automatically chooses Ace value based on which one helps you the best.\n" + 
                         "5. The person with the highest score, without going over 21 wins.\n" +
-                        "6. Select amount to bet and hit the Bet Button to begin a round\n" +
+                        "6. Select amount to bet and hit the 'Bet' Button to begin a round\n" +
                         "7. Use 'hit' button to draw a card, 'stand' button to have the house reveal and draw cards\n" +
-                        "8. See how much money you can accumulate.";
+                        "8. See how much money you can accumulate.\n" +
+                        "9. When you lose all your money, hit 'Bet' button to have an option to play again";
         ruleTextArea.setText(rules);
 
         Font ruleFont = new Font("Rule Font", Font.ROMAN_BASELINE, 20);

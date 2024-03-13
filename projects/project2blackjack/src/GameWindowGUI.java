@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GameWindow extends JFrame {
+public class GameWindowGUI extends JFrame {
     // variables
     private BlackJack game;
     private final Color tableColor = new Color(50, 168, 82);
@@ -27,7 +27,7 @@ public class GameWindow extends JFrame {
     private JButton hitButton;
     private JButton standButton;
 
-    public GameWindow(BlackJack game) {
+    public GameWindowGUI(BlackJack game) {
         this.game = game;
         this.setLayout(new BorderLayout());
         this.createComponents();

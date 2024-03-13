@@ -3,7 +3,8 @@ import java.util.HashMap;
 
 /**
  * Class represents a 'hand' of cards for a game of BlackJack, hand includes a variable 'bust' if the hand value is
- * over 21
+ * over 21. Also automaticaly handles aces, will output the highest value without going over 21, if an ace is in hand
+ * that goes over 21, it will set the ace to a value of 1.
  */
 public class Hand {
     private ArrayList<Card> hand = new ArrayList<>();
@@ -21,7 +22,7 @@ public class Hand {
         put(Rank.JACK, 10);
         put(Rank.QUEEN, 10);
         put(Rank.KING, 10);
-        put(Rank.ACE, 11); // ACE can also be treated as 1, handled in totalHandValue method
+        put(Rank.ACE, 11); // Ace can also be treated as 1, handled in value method
     }};
 
     /**
