@@ -200,8 +200,11 @@ public class GameWindowGUI extends JFrame {
      * @param value true to display button and spinner and allow user input, false otherwise
      */
     public void setBetAndSpinner(boolean value) {
-        spinner.setEnabled(value);
-        betButton.setEnabled(value);
+        SwingUtilities.invokeLater(() -> {
+            spinner.setEnabled(value);
+            betButton.setEnabled(value);
+        });
+
     }
 
     /**
