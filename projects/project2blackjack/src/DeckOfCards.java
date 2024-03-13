@@ -42,8 +42,8 @@ public class DeckOfCards {
     public Card drawCard() {
         if (deck.isEmpty()) {
             initializeDeck();
+            System.out.println("New Deck");
         }
-        System.out.println("New Deck");
         return deck.remove(0);
     }
 
