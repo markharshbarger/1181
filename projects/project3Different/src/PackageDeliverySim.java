@@ -32,12 +32,12 @@ public class PackageDeliverySim {
     private static Map<Integer, Double> truckStartingTime = new TreeMap<>();
     private static Map<Integer, Double> truckTotalTripTime = new TreeMap<>();
 
-    public static void conductSim(double percentDrone, String trainScheduleFileLocation) {
-        if (percentDrone > 1 || percentDrone < 0) {
-            System.out.println("Please enter a value under between (including) 1 and 0");
-            return;
+    public static double conductSim(int percentDrone, String trainScheduleFileLocation) {
+        if (percentDrone > 100 || percentDrone < 0) {
+            System.out.println("Please enter a value under between (including) 100 and 0");
+            return 0.0;
         }
-        PERCENT_BY_DRONE = percentDrone;
+        PERCENT_BY_DRONE = percentDrone / 100.0;
         numOfDrones = calculateDrone();
         numOfTrucks = calculateTruck();
 
@@ -101,6 +101,7 @@ public class PackageDeliverySim {
 
         System.out.print("\n\nSTATS\n-----\n");
         printStats();
+        return Math.max(totalDroneTime, totalTruckTime);
     }
 
     private static void addTruckLaunchToQueue() {
