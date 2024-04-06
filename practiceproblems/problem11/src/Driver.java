@@ -6,22 +6,21 @@ public class Driver {
     public static void main(String[] args) throws InterruptedException {
         int numberOfThreads = 0;
         int n = 0;
-        
-        // get the command line parameters
-        Scanner userInput = new Scanner(System.in);
-        System.out.print("Number of threads to use: ");
-        numberOfThreads = userInput.nextInt();
-        System.out.print("\nValue of n: ");
-        userInput.nextLine();
-        n = userInput.nextInt();
-        userInput.close();
+        if (args.length == 2) {
+            numberOfThreads = Integer.valueOf(args[0]);
+            n = Integer.valueOf(args[1]);
+        } else { // if command line doesn't have two args then don;t return anything
+            System.out.println("Please specify threadcount and value of n in command line");
+            return;
+        }
 
-        long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis(); // start clock
         int dividedWork = n / numberOfThreads;
         List<PrimeThread> threadList = new ArrayList<>();
 
         for (int i = 0; i < numberOfThreads; ++i) {
-            PrimeThread currentThread = new PrimeThread(i * dividedWork, (i * dividedWork) + dividedWork);
+            int start = i * dividedWork;
+            PrimeThread currentThread = new PrimeThread(start, (start + dividedWork));
             threadList.add(currentThread);
         }
 
@@ -33,7 +32,7 @@ public class Driver {
             t.join();
         }
 
-        long endTime = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis(); // end clock
         System.out.println("System took " + (endTime - startTime) + " ms to complete program");
         int answer = 0;
         for (PrimeThread t : threadList) {
