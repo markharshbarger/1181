@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Driver {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         int numberOfThreads = 0;
         int n = 0;
         if (args.length == 2) {
             numberOfThreads = Integer.valueOf(args[0]);
             n = Integer.valueOf(args[1]);
-        } else { // if command line doesn't have two args then don;t return anything
+        } else { // if command line doesn't have exactly two args then don't return anything
             System.out.println("Please specify threadcount and value of n in command line");
             return;
         }
@@ -28,7 +28,11 @@ public class Driver {
         }
 
         for (PrimeThread t : threadList) {
-            t.join();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         long endTime = System.currentTimeMillis(); // end clock
@@ -39,5 +43,4 @@ public class Driver {
         }
         System.out.println("Answer: " + answer);
     }
-
 }
