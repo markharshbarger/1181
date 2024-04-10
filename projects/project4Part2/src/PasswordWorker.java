@@ -1,6 +1,11 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import net.lingala.zip4j.core.*;
 import net.lingala.zip4j.exception.*;
 
@@ -10,7 +15,7 @@ public class PasswordWorker extends Thread {
     private int threadID;
     private String copyOfZip;
     private String mainDestinationPath = "contents";
-    private String contentPath = mainDestinationPath + "-" + threadID;
+    private String contentPath;
     private PasswordManager passwordManager;
     private ZipFile zipFile = null;
 
@@ -18,6 +23,7 @@ public class PasswordWorker extends Thread {
         this.threadID = threadID;
         this.passwordManager = passwordManager;
         copyOfZip = threadID + fileLocationOfZip;
+        contentPath = mainDestinationPath + "-" + threadID;
 
         try {
             Files.copy(Path.of(fileLocationOfZip), Path.of(copyOfZip));
@@ -45,7 +51,6 @@ public class PasswordWorker extends Thread {
 			} catch (Exception e){
 				e.printStackTrace();
             }
-			System.out.println("Correct password: " + password);
             passwordManager.setPasswordFound(true);
             passwordManager.setPassword(password);
             try {
@@ -59,9 +64,29 @@ public class PasswordWorker extends Thread {
             }
         }
         // once password is found delete remanents
+        deleteFiles();
+    }
+
+    // https://mkyong.com/java/java-files-walk-examples/
+    private void deleteFiles() {
         try {
             Files.delete(Path.of(copyOfZip));
-            Files.delete(Path.of(contentPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        try (Stream<Path> walk = Files.walk(Paths.get(contentPath))){
+            List<Path> result;
+                result = walk.filter(Files::isRegularFile).collect(Collectors.toList());
+            result.forEach(y -> {
+                try {
+                    Files.deleteIfExists(y);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Files.deleteIfExists(Path.of(contentPath + "/message.txt"));
+            Files.deleteIfExists(Path.of(contentPath));
         } catch (IOException e) {
             e.printStackTrace();
         }
