@@ -18,8 +18,8 @@ public class PasswordManager {
         return passwordList.get(num++);
     }
 
-    public void setPasswordFound() {
-        passwordFound = false;
+    public void setPasswordFound(boolean passwordFound) {
+        this.passwordFound = passwordFound;
     }
 
     public void setPassword(String correctPassword) {
