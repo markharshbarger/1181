@@ -69,13 +69,9 @@ public class PasswordWorker extends Thread {
     private void deleteFiles() {
         try {
             Files.delete(Path.of(copyOfZip));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        try (Stream<Path> walk = Files.walk(Paths.get(contentPath))){
-            List<Path> result;
-            result = walk.filter(Files::isRegularFile).collect(Collectors.toList());
+            Stream<Path> walk = Files.walk(Paths.get(contentPath));
+            List<Path> result = walk.filter(Files::isRegularFile).collect(Collectors.toList());
+            walk.close();
             result.forEach(y -> {
                 try {
                     Files.deleteIfExists(y);
