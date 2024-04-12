@@ -12,7 +12,6 @@ import net.lingala.zip4j.exception.*;
 //Files.copy(Path.of(srcFilename), Path.of(destinationFilename));
 //Files.delete(Path.of(filename));
 public class PasswordWorker extends Thread {
-    private int threadID;
     private String copyOfZip;
     private String mainDestinationPath = "contents";
     private String contentPath;
@@ -20,7 +19,6 @@ public class PasswordWorker extends Thread {
     private ZipFile zipFile = null;
 
     public PasswordWorker(int threadID, String fileLocationOfZip, PasswordManager passwordManager) {
-        this.threadID = threadID;
         this.passwordManager = passwordManager;
         copyOfZip = threadID + fileLocationOfZip;
         contentPath = mainDestinationPath + "-" + threadID;
@@ -77,7 +75,7 @@ public class PasswordWorker extends Thread {
         
         try (Stream<Path> walk = Files.walk(Paths.get(contentPath))){
             List<Path> result;
-                result = walk.filter(Files::isRegularFile).collect(Collectors.toList());
+            result = walk.filter(Files::isRegularFile).collect(Collectors.toList());
             result.forEach(y -> {
                 try {
                     Files.deleteIfExists(y);

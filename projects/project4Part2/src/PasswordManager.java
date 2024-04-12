@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class PasswordManager {
     private volatile boolean passwordFound = false;
-    private ArrayList<String> passwordList;
+    private ArrayList<String> passwords;
     private int num = 0;
     private String correctPassword = "";
 
-    public PasswordManager(ArrayList<String> passwordList) {
-        this.passwordList = passwordList;
+    public PasswordManager(ArrayList<String> passwords) {
+        this.passwords = passwords;
     }
 
     public boolean isPasswordFound() {
@@ -15,7 +15,7 @@ public class PasswordManager {
     }
 
     public synchronized String getPasswordGuess() {
-        return passwordList.get(num++);
+        return passwords.get(num++);
     }
 
     public void setPasswordFound(boolean passwordFound) {

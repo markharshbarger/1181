@@ -4,15 +4,27 @@ import java.util.List;
 // 13 threads for part 2
 // static volitile boolean to have threads stop once the password is cracked
 public class Driver {
-    public static void main(String[] args) {
-		int numThreads = 13;
-		String zipFileLocation = "protected5.zip";
-        long startTime = System.currentTimeMillis(); // start clock
+	final static int NUMBER_OF_THREADS = 16;
+	final static int PASSWORD_LENGTH = 5;
+	final static String ZIP_FILE_LOCATION = "protected5.zip";
+	static PasswordManager manager;
 
-		PasswordManager manager = new PasswordManager(generatePasswords(5));
+
+    public static void main(String[] args) {
+        long startTime = System.currentTimeMillis(); // start clock
+		manager = new PasswordManager(generatePasswords(PASSWORD_LENGTH));
+
+		crackPassword();
+
+		System.out.println("Correct password: " + manager.getCorrectPassword());
+		long endTime = System.currentTimeMillis(); // end clock
+		System.out.println(endTime - startTime + " ms to crack password");
+    }
+
+	private static void crackPassword() {
 		List<Thread> threadList = new ArrayList<>();
-		for (int i = 0; i < numThreads; i++) {
-			threadList.add(new PasswordWorker(i, zipFileLocation, manager));
+		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+			threadList.add(new PasswordWorker(i, ZIP_FILE_LOCATION, manager));
 		}
 
 		for (Thread thread : threadList) {
@@ -26,15 +38,13 @@ public class Driver {
 				e.printStackTrace();
 			}
 		}
-
-		System.out.println("Correct password: " + manager.getCorrectPassword());
-		long endTime = System.currentTimeMillis(); // end clock
-		System.out.println(endTime - startTime + " ms to crack password");
-    }
+	}
 
 	public static ArrayList<String> generatePasswords(int passwordLength) {
 		ArrayList<String> passwords = new ArrayList<>();
-		if (passwordLength == 1) {
+		if (passwordLength < 1) {
+			return passwords; // if password length is 0 then return empty list
+		} else if (passwordLength == 1) {
 			for (char c = 'a'; c <= 'z'; c++) {
 				passwords.add(Character.toString(c));
 			}
