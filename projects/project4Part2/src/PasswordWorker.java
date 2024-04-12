@@ -79,7 +79,7 @@ public class PasswordWorker extends Thread {
                     e.printStackTrace();
                 }
             });
-            Files.deleteIfExists(Path.of(contentPath + "/message.txt"));
+            // Files.deleteIfExists(Path.of(contentPath + "/message.txt"));
             Files.deleteIfExists(Path.of(contentPath));
         } catch (IOException e) {
             e.printStackTrace();
