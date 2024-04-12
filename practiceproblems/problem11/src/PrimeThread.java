@@ -40,7 +40,7 @@ public class PrimeThread extends Thread {
     /**
      * Calculates whether a given int is a prime number or not
      * 
-     * @param n int the number that is being tested if it's prime
+     * @param n int - the number that is being tested if it's prime
      * @return true if n is prime, false otherwise
      */
     public static boolean isPrime(int n) {
