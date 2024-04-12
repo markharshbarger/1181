@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
-// 13 threads for part 2
-// static volitile boolean to have threads stop once the password is cracked
+//
+//
 public class Driver {
 	final static int NUMBER_OF_THREADS = 16;
 	final static int PASSWORD_LENGTH = 5;

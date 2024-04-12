@@ -13,7 +13,7 @@ import net.lingala.zip4j.exception.*;
 //Files.delete(Path.of(filename));
 public class PasswordWorker extends Thread {
     private String copyOfZip;
-    private final String MAIN_DESTINATION_PATH = "contents";
+    private String mainDestinationPath = "contents";
     private String contentPath;
     private PasswordManager passwordManager;
     private ZipFile zipFile = null;
@@ -21,15 +21,18 @@ public class PasswordWorker extends Thread {
     public PasswordWorker(int threadID, String fileLocationOfZip, PasswordManager passwordManager) {
         this.passwordManager = passwordManager;
         copyOfZip = threadID + fileLocationOfZip;
-        contentPath = MAIN_DESTINATION_PATH + "-" + threadID;
+        contentPath = mainDestinationPath + "-" + threadID;
 
         try {
             Files.copy(Path.of(fileLocationOfZip), Path.of(copyOfZip));
-            zipFile = new ZipFile(copyOfZip);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ZipException ze) {
-            ze.printStackTrace();
+        }
+
+		try {
+            zipFile = new ZipFile(copyOfZip);
+        } catch (ZipException e) {
+            e.printStackTrace();
         }
     }
 
@@ -51,7 +54,7 @@ public class PasswordWorker extends Thread {
             try {
 				ZipFile zipFile = new ZipFile(copyOfZip);
 				zipFile.setPassword(password);
-				zipFile.extractAll(MAIN_DESTINATION_PATH);
+				zipFile.extractAll(mainDestinationPath);
 			} catch (ZipException ze) {
 				continue;
 			} catch (Exception e){
