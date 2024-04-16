@@ -15,7 +15,11 @@ public class PasswordManager {
     }
 
     public synchronized String getPasswordGuess() {
-        return passwords.get(num++);
+        if (num < passwords.size() - 1) {
+            return passwords.get(num++);
+        } else {
+            return null;
+        }
     }
 
     public void setPasswordFound(boolean passwordFound) {

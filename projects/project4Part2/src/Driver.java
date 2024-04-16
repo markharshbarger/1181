@@ -5,7 +5,7 @@ import java.util.List;
 // time for 4 threads to break 5 char password: 74658 ms
 // on ryzen 7 5700x processor (Desktop)
 public class Driver {
-	final static int NUMBER_OF_THREADS = 4;
+	final static int NUMBER_OF_THREADS = 13;
 	final static int PASSWORD_LENGTH = 5;
 	final static String ZIP_FILE_LOCATION = "protected5.zip";
 	static PasswordManager manager;
