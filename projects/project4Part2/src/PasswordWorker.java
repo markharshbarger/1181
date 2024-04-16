@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+import java.util.ArrayList;
 import net.lingala.zip4j.core.*;
 import net.lingala.zip4j.exception.*;
 
@@ -17,11 +17,17 @@ public class PasswordWorker extends Thread {
     private String contentPath;
     private PasswordManager passwordManager;
     private ZipFile zipFile = null;
+    private ArrayList<String> passwords;
+    private int start;
+    private int end;
 
-    public PasswordWorker(int threadID, String fileLocationOfZip, PasswordManager passwordManager) {
+    public PasswordWorker(int threadID, String fileLocationOfZip, PasswordManager passwordManager, ArrayList<String> passwords, int start, int end) {
         this.passwordManager = passwordManager;
         copyOfZip = threadID + fileLocationOfZip;
         contentPath = mainDestinationPath + "-" + threadID;
+        this.passwords = passwords;
+        this.end = end;
+        this.start = start;
 
         try {
             Files.copy(Path.of(fileLocationOfZip), Path.of(copyOfZip));
@@ -38,8 +44,8 @@ public class PasswordWorker extends Thread {
 
     @Override
     public void run() {
-        while (passwordManager.isPasswordFound() == false) {
-            String password = passwordManager.getPasswordGuess();
+        while (passwordManager.isPasswordFound() == false && start <= end) {
+            String password = passwords.get(start++);
             System.out.println("Trying password " + password);
             try {
 				zipFile.setPassword(password);
