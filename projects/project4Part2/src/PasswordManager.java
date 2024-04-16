@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class PasswordManager {
     private volatile boolean passwordFound = false;
     private String correctPassword = "";

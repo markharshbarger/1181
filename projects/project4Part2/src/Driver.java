@@ -4,6 +4,9 @@ import java.util.List;
 // time for 3 threads to break 5 char password: 82688 ms
 // time for 4 threads to break 5 char password: 74658 ms
 // on ryzen 7 5700x processor (Desktop)
+
+// 273674 ms
+// 63521 ms to crack password
 public class Driver {
 	final static int NUMBER_OF_THREADS = 3;
 	final static int PASSWORD_LENGTH = 5;
@@ -30,7 +33,7 @@ public class Driver {
 			int start = i * passwordsPerThread;
 			int end = start + passwordsPerThread;
 			if (i + 1 == NUMBER_OF_THREADS) {
-				end = passwords.size() - 1; // if work couldn't be evenly divided make sure last thread gets extra password
+				end = passwords.size() - 1; // if work couldn't be evenly divided make sure last thread gets extra passwords
 			}
 			threadList.add(new PasswordWorker(i, ZIP_FILE_LOCATION, manager, passwords, start, end));
 		}
