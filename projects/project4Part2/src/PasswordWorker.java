@@ -74,7 +74,7 @@ public class PasswordWorker extends Thread {
     // https://mkyong.com/java/java-files-walk-examples/
     private void deleteFiles() {
         try {
-            Files.delete(Path.of(copyOfZip));
+            Files.deleteIfExists(Path.of(copyOfZip));
             Stream<Path> walk = Files.walk(Paths.get(contentPath));
             List<Path> result = walk.filter(Files::isRegularFile).collect(Collectors.toList());
             walk.close();
