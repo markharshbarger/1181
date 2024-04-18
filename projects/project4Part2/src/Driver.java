@@ -4,12 +4,14 @@ import java.util.List;
 // time for 3 threads to break 5 char password: 82688 ms
 // time for 4 threads to break 5 char password: 74658 ms
 // on ryzen 7 5700x processor (Desktop)
+
+// Name: Mark Harshbarger
+// WSU email: harshbarger.26@wright.ed
 public class Driver {
 	final static int NUMBER_OF_THREADS = 13;
 	final static int PASSWORD_LENGTH = 5;
 	final static String ZIP_FILE_LOCATION = "protected5.zip";
 	static PasswordManager manager;
-
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis(); // start clock
@@ -22,6 +24,10 @@ public class Driver {
 		System.out.println(endTime - startTime + " ms to crack password");
     }
 
+	/**
+	 * Cracks a password by starting multiple threads to start trying different passwords.
+	 * Uses a PasswordManager to keep track of passwords.
+	 */
 	private static void crackPassword() {
 		List<Thread> threadList = new ArrayList<>();
 		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
@@ -41,6 +47,12 @@ public class Driver {
 		}
 	}
 
+	/**
+	 * Recursive function used to generate all different combinations of lowercase characters of a certain length.
+	 * 
+	 * @param passwordLength int - the length that you want all the passwords to be
+	 * @return an ArrayList<String> containing the generated passwords
+	 */
 	public static ArrayList<String> generatePasswords(int passwordLength) {
 		ArrayList<String> passwords = new ArrayList<>();
 		if (passwordLength < 1) {
