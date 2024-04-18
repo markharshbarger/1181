@@ -5,12 +5,13 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import net.lingala.zip4j.core.*;
 import net.lingala.zip4j.exception.*;
 
-//Files.copy(Path.of(srcFilename), Path.of(destinationFilename));
-//Files.delete(Path.of(filename));
+/**
+ * Class represents an object that tries to crack a password. It extends thread in order for the ability to have 
+ * simultaneous password cracking. Uses PasswordManager to keep track of the passwords and other threads cracking the password.
+ */
 public class PasswordWorker extends Thread {
     private String copyOfZip;
     private String mainDestinationPath = "contents";
@@ -18,6 +19,14 @@ public class PasswordWorker extends Thread {
     private PasswordManager passwordManager;
     private ZipFile zipFile = null;
 
+    /**
+     * Constructor of PasswordWorker, sets an ID, sets the file location of the zip file to be cracked,
+     * and sets the password manager to be used for getting the passwords to try
+     * 
+     * @param threadID int - the ID of the current thread
+     * @param fileLocationOfZip String - the file path of the zip file to be cracked
+     * @param passwordManager PasswordManager - the password manager object that keeps track of the passwords to try and other threads
+     */
     public PasswordWorker(int threadID, String fileLocationOfZip, PasswordManager passwordManager) {
         this.passwordManager = passwordManager;
         copyOfZip = threadID + fileLocationOfZip;
@@ -36,6 +45,10 @@ public class PasswordWorker extends Thread {
         }
     }
 
+    /**
+     * Will try different passwords until it tries the correct one or another thread using the same passwordManager
+     * finds the correct password
+     */
     @Override
     public void run() {
         while (passwordManager.isPasswordFound() == false) {
@@ -64,15 +77,18 @@ public class PasswordWorker extends Thread {
 				e.printStackTrace();
             }
         }
-        // once password is found delete remanents
-        deleteFiles();
+        
+        deleteFiles(); // once password is found delete remanents
     }
 
-    // https://mkyong.com/java/java-files-walk-examples/
+    /**
+     * Deletes the file that the thread used to crack the password. These files include the copy of the zip file and 
+     * the folder along with the .txt document and anything else inside the folder
+     */
     private void deleteFiles() {
         try {
             Files.deleteIfExists(Path.of(copyOfZip));
-            Stream<Path> walk = Files.walk(Paths.get(contentPath));
+            Stream<Path> walk = Files.walk(Paths.get(contentPath)); // https://mkyong.com/java/java-files-walk-examples/
             List<Path> result = walk.filter(Files::isRegularFile).collect(Collectors.toList());
             walk.close();
             result.forEach(y -> {
@@ -82,7 +98,6 @@ public class PasswordWorker extends Thread {
                     e.printStackTrace();
                 }
             });
-            // Files.deleteIfExists(Path.of(contentPath + "/message.txt"));
             Files.deleteIfExists(Path.of(contentPath));
         } catch (IOException e) {
             e.printStackTrace();
