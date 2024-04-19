@@ -8,7 +8,7 @@ public class PasswordManager {
     private volatile boolean passwordFound = false;
     private ArrayList<String> passwords;
     private int num = 0;
-    private String correctPassword = "";
+    private String correctPassword = "\n\u001B[31m Error: password not found\u001B[0m"; // if no password is found
 
     /**
      * Constructor for Passwordmanager, sets the objects passwords
@@ -29,12 +29,12 @@ public class PasswordManager {
     }
 
     /**
-     * Gets the next password guess that hasn't been used yet
+     * Gets the next password guess that hasn't been used yet. If no passwords are left returns null
      * 
-     * @return String - the next password guess
+     * @return String - the next password guess or null if no passwords are left
      */
     public synchronized String getPasswordGuess() {
-        if (num < passwords.size() - 1) {
+        if (num < passwords.size()) {
             return passwords.get(num++);
         } else {
             return null;

@@ -1,22 +1,22 @@
 import java.util.ArrayList;
 import java.util.List;
 
-// time for 3 threads to break 5 char password: 82688 ms
-// time for 4 threads to break 5 char password: 74658 ms
+// time for 3 threads to break 5 char password: 56921 ms
+// time for 4 threads to break 5 char password: 44783 ms
 // on ryzen 7 5700x processor (Desktop)
-
 // Name: Mark Harshbarger
 // WSU email: harshbarger.26@wright.ed
 public class Driver {
-	final static int NUMBER_OF_THREADS = 13;
-	final static int PASSWORD_LENGTH = 5;
-	final static String ZIP_FILE_LOCATION = "protected5.zip";
+	final static int numThreads = 1;
+	final static int PASSWORD_LENGTH = 3; // change for desired password length (only contains lowercase letters)
+	final static String ZIP_FILE_LOCATION = "protected3.zip";
 	static PasswordManager manager;
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis(); // start clock
 		manager = new PasswordManager(generatePasswords(PASSWORD_LENGTH));
 
+		System.out.println("Trying passwords...");
 		crackPassword();
 
 		System.out.println("Correct password: " + manager.getCorrectPassword());
@@ -30,7 +30,7 @@ public class Driver {
 	 */
 	private static void crackPassword() {
 		List<Thread> threadList = new ArrayList<>();
-		for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+		for (int i = 0; i < numThreads; i++) {
 			threadList.add(new PasswordWorker(i, ZIP_FILE_LOCATION, manager));
 		}
 

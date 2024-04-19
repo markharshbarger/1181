@@ -53,10 +53,9 @@ public class PasswordWorker extends Thread {
     public void run() {
         while (passwordManager.isPasswordFound() == false) {
             String password = passwordManager.getPasswordGuess();
-            if (password == null) {
+            if (password == null) { // no more passwords left
                 break;
             }
-            System.out.println("Trying password " + password);
             try {
 				zipFile.setPassword(password);
 				zipFile.extractAll(contentPath);
