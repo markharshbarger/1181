@@ -7,9 +7,9 @@ import java.util.List;
 // Name: Mark Harshbarger
 // WSU email: harshbarger.26@wright.ed
 public class Driver {
-	final static int numThreads = 1;
-	final static int PASSWORD_LENGTH = 3; // change for desired password length (only contains lowercase letters)
-	final static String ZIP_FILE_LOCATION = "protected3.zip";
+	final static int numThreads = 13;
+	final static int PASSWORD_LENGTH = 5; // change for desired password length (only contains lowercase letters)
+	final static String ZIP_FILE_LOCATION = "protected5.zip";
 	static PasswordManager manager;
 
     public static void main(String[] args) {
